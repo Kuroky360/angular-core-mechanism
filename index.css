@@ -1,0 +1,27 @@
+body {
+  height: 100%;
+  margin: 0;
+  background-image: url('img/whitepage.jpg');
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+}
+
+h1, h2 {
+  font-family: 'Cherry Cream Soda', cursive;
+  font-size: 4em;
+  text-align: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: .2em;
+  margin: 0;
+}
+
+input {
+  font-size: .5em;
+  margin: .5em;
+  border-radius: .2em;
+  border: none;
+}
