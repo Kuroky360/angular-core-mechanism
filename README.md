@@ -1,2 +1,5 @@
 # angular-core-mechanism
-just a simple version of angular   demonstration 
+A simple version of Angular   
+
+rewrite a basic implementation of Angular to give you an idea of how it works.
+[Matthieu Lux video]
