@@ -1,6 +1,3 @@
-/**
- * Created by Kuroky360 on 15/11/15.
- */
 'use strict';
 
 // framework
@@ -12,7 +9,7 @@
 
         this.$watch=function(watcherFn,listenerFn){
             this.$$watchers.push({
-                watchFn:watcherFn,
+                watchFn:watcherFn,
                 listenerFn:listenerFn
             })
         };
