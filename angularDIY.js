@@ -2,14 +2,43 @@
  * Created by kuroky360 on 16-1-25.
  */
 !function(window,document,undefined){
-    var angular=window.angular||{};
+
+    var angular=window.angular||{},
+        toString=Object.prototype.toString;
     //todo fns
+    function copy(){
+
+    }
+
     function extend(){
 
     }
 
-    function isFunciton(value){
-        return typeof value ==='function';
+    function isFunciton(value){return typeof value ==='function';}
+
+    function noop(){}
+
+    function isUndefined(value){return typeof value ==='undefined';}
+
+    function isDefined(value){return typeof value !=='undefined';}
+
+    function isString(value){return typeof value==='string';}
+
+    function isObject(value){return value!==null&&typeof value==='object'}
+
+    function isNumber(value){return typeof value === 'number'}
+
+    function isDate(value){ toString.call(value)==='[object Date]'}
+
+    function lowercase(value){return isString(value)?value.toLowerCase():value}
+
+    function uppercase(value){return isString(value)?value.toUpperCase():value}
+
+    function fromJson(value){
+        return isString(value)?JSON.parse(value):value;
+    }
+
+    function toJson(value){
     }
 
     function setupModuleLoader(window) {
