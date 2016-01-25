@@ -9,7 +9,7 @@
 
         this.$watch=function(watcherFn,listenerFn){
             this.$$watchers.push({
-                watchFn:watcherFn,
+                watchFn:watcherFn,
                 listenerFn:listenerFn
             })
         };
