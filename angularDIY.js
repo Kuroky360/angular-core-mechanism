@@ -38,6 +38,8 @@
         return isString(value)?JSON.parse(value):value;
     }
 
+    function identity($){return $;}
+
     function toJson(value){
     }
 
