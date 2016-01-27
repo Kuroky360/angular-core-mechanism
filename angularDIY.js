@@ -43,6 +43,12 @@
     function toJson(value){
     }
 
+    function valueFn(value){
+        return function(){
+            return value;
+        }
+    }
+
     function setupModuleLoader(window) {
 
         function ensure(obj, child, factory) {
