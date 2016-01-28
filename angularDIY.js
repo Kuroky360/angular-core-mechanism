@@ -131,7 +131,7 @@
 
         modules.unshift('ng');
         modules.push(['$provide',function($provide){
-            $provide.value('$rootElement',element));
+            $provide.value('$rootElement',element);
         }]);
 
         instaneInjector = createInjector(modules);
@@ -150,6 +150,10 @@
             path=[],
             providerCache={
                 $provide:{
+                    provider:supportObject(provider),
+                    factory:supportObject(factory),
+                    service:supportObject(service),
+                    value:supportObject(value)
                 }
             },
             providerInjector=(providerCache.$injector=createInternalInjector(providerCache,function(seviceName,caller){
@@ -161,17 +165,27 @@
                 instanceCache.invoke(provider.$get,provider,undefined,serviceName);
             }));
 
-        //provider
-        function provider(name,factoryFn){
-            var instanceObj;
-            if(isFunciton(factoryFn)){
-                instanceObj = providerInjector.instantiate(factoryFn);
+        //support object arg
+        function supportObject(delegate){
+            return function(key,value){
+                if(isObject(key)){
+                    /*forEach(name,function(value,index){
+                        fn(index,value);
+                    })*/
+                }else{
+                    return delegate(key,value);
+                }
             }
-            if(instanceObj.$get){
+        }
+        //provider
+        function provider(name,provider_){
+            if(isFunciton(provider_)||isArray(provider_)){
+                provider_ = providerInjector.instantiate(provider_);
+            }
+            if(!provider_.$get){
                 throw new Error('do not have $get method!');
             }
-
-            return  providerCache[name+providerSufix]=instanceObj;
+            return  providerCache[name+providerSufix]=provider_;
         }
 
         function enForceReturnValue(factoryFn){
@@ -182,15 +196,17 @@
         }
 
         //facotry
-        function factory(name,factoryFn,enForceReturnValue){
+        function factory(name,factoryFn,enForce){
             return provider(name,{
-                $get:enForceReturnValue===false?enForceReturnValue(factoryFn):factoryFn
+                $get:enForce===false?enForceReturnValue(factoryFn):factoryFn
             });
         }
 
         //service
-        function service(name,factoryFn){
-            //return factory(name,)
+        function service(name,contructor){
+            return factory(name,['$injector',function($injector){
+                return $injector.instantiate(contructor);
+            }]);
         }
 
         //value
@@ -207,6 +223,9 @@
             // get service
             function getService(serviceName,caller){
                 if(cache.hasOwnProperty(serviceName)){
+                    if(cache[serviceName]===INSTANTING){
+                        throw new Error('重复循环依赖！');
+                    }
                     return cache[serviceName];
                 }else{
                     cache[serviceName]=INSTANTING;
@@ -222,15 +241,9 @@
                     i,
                     item,
                     annotateArray=annotate(fn);
-
-                length =annotateArray.length;
-                for(i=0;i<length;i++){
+                for(i=0,length=annotateArray.length;i<length;i++){
                     item=annotateArray[i];
-                    if(locals&&locals.hasOwnProperty(item)){
-                        args.push(locals[item]);
-                    }else{
-                        args.push(getService(item));
-                    }
+                    args.push(locals&&locals.hasOwnProperty(item)?locals[item]:getService(item,serviceName));
                 }
 
                 if(isArray(fn)){
@@ -241,9 +254,9 @@
             }
 
             // intantiate instace
-            function instantiate(type){
+            function instantiate(type,locals,serviceName){
                 var instance = Object.create((isArray(type)? type[type.length-1]:type).prototype||null);
-                var returnValue = invoke(type);
+                var returnValue = invoke(type,instance,locals,serviceName);
 
                 return isObject(returnValue)|| isFunciton(returnValue)?returnValue:instance;
             }
