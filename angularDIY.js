@@ -4,7 +4,11 @@
 !function(window,document,undefined){
     // initial variable
     var angular=window.angular||{},
-        toString=Object.prototype.toString;
+        toString=Object.prototype.toString,
+        slice=[].slice,
+        splice=[].splice,
+        jqlite,
+        getPrototypeOf=Object.getPrototypeOf;
     // shadow & deep
     function copy(){
 
@@ -31,7 +35,13 @@
     // dom selectors fn todo
     ////////////////////////////////////
 
+    function jqlite(){
+        this.length=0;
+    }
 
+    jqlite.prototype={
+      //todo
+    };
     ////////////////////////////////////
     // fn utils
     ////////////////////////////////////
@@ -81,6 +91,28 @@
         return function(value,key){
             iteratorFn(key,value);
         };
+    }
+
+    // check blankObject -->with a null prototype
+    function isBlankObject(value){
+        return value!==null&&typeof value==='object'&& !getPrototypeOf(value);
+    }
+
+    // check window
+    function isWindow(obj){
+        return obj&&obj.window===obj;
+    }
+
+    // is ArrayLike
+    function isArrayLike(obj){
+        if(obj===null||isWindow(obj)) return false;
+        if(isArray(obj)||isString(obj)||jqlite&&obj instanceof jqlite) return true;
+        //var length = obj
+    }
+
+    // Creates a new object without a prototype.
+    function createMap(){
+        return Object.create(null);
     }
 
     // module loader setup
@@ -151,7 +183,7 @@
     }
 
     //injector creator
-    function createInjector(){
+    function createInjector(modulesToLoad){
         var providerSufix='Provider',
             INSTANTING={},
             path=[],
@@ -171,6 +203,7 @@
                 var provider = providerInjector.get(serviceName+providerSufix,caller);
                 instanceCache.invoke(provider.$get,provider,undefined,serviceName);
             }));
+        //forEach load modules
 
         //support object arg
         function supportObject(delegate){
