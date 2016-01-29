@@ -7,7 +7,8 @@
         toString=Object.prototype.toString,
         slice=[].slice,
         splice=[].splice,
-        jqlite,
+        jqLite,
+        hasOwnProperty=Object.prototype.hasOwnProperty,
         getPrototypeOf=Object.getPrototypeOf;
     // shadow & deep
     function copy(){
@@ -35,11 +36,11 @@
     // dom selectors fn todo
     ////////////////////////////////////
 
-    function jqlite(){
+    function jqLite(){
         this.length=0;
     }
 
-    jqlite.prototype={
+    jqLite.prototype={
       //todo
     };
     ////////////////////////////////////
@@ -103,11 +104,52 @@
         return obj&&obj.window===obj;
     }
 
-    // is ArrayLike
+    // is ArrayLike NodeList arguments jqLite string
     function isArrayLike(obj){
         if(obj===null||isWindow(obj)) return false;
-        if(isArray(obj)||isString(obj)||jqlite&&obj instanceof jqlite) return true;
-        //var length = obj
+        if(isArray(obj)||isString(obj)||jqLite&&obj instanceof jqLite) return true;
+        var length = 'length' in Object(obj)&&obj.length;
+        return isNumber(length) && (length >=0 && (length-1) in obj ||typeof  obj.item ==='function');
+    }
+
+    //forEach fn
+    function forEach(obj,iterator,context){
+        var key,
+            length;
+        if(obj){
+            if(isFunciton(obj)){
+                for(key in obj){
+                    if('length'!==key&&'prototype'!==key&&'name'!==key&&(!obj.hasOwnProperty||obj.hasOwnProperty(key))){
+                        iterator.call(context,obj[key],key,obj);
+                    }
+                }
+            }else if(isArray(obj)||isArrayLike(obj)){
+                var isPrimitive = typeof obj!=='object';
+                for(key=0,length=obj.length;key<length;key++){
+                    if(isPrimitive||key in obj)
+                    iterator.call(context,obj[key],key,obj);
+                }
+            }else if(obj.forEach&&obj.forEach!==forEach){
+                obj.forEach(iterator,context,obj);
+            }else if(isBlankObject(obj)){
+                for(key in obj){ //no inheritance :fast path
+                    iterator.call(context,obj[key],key,obj);
+                }
+            }else if(typeof obj.hasOwnProperty!=='function'){//maybe no hasOwnProperty method
+                for(key in obj){
+                    if(hasOwnProperty.call(obj,key)){
+                        iterator.call(context,obj[key],key,obj);
+                    }
+                }
+            }else{
+                for(key in obj){
+                    if(obj.hasOwnProperty(key)){
+                        iterator.call(context,obj[key],key,obj);
+                    }
+                }
+            }
+        }
+        return obj;
     }
 
     // Creates a new object without a prototype.
@@ -204,14 +246,22 @@
                 instanceCache.invoke(provider.$get,provider,undefined,serviceName);
             }));
         //forEach load modules
+        forEach(loadMoules(modulesToLoad),function(fn){if(fn) instanceInjector.invoke(fn);})
+
+        ////////////////////////////////////
+        // Module Loading
+        ////////////////////////////////////
+        function loadMoules(modules){
+            var runBlocks=[];
+            //todo
+            return runBlocks;
+        }
 
         //support object arg
         function supportObject(delegate){
             return function(key,value){
                 if(isObject(key)){
-                    /*forEach(name,function(value,index){
-                        fn(index,value);
-                    })*/
+                    forEach(key,reverseParams(delegate))
                 }else{
                     return delegate(key,value);
                 }
