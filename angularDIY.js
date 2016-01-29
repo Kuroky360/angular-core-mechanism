@@ -76,6 +76,13 @@
 
     function isArray(value){ return Array.isArray(value);}
 
+    //reverse params
+    function reverseParams(iteratorFn){
+        return function(value,key){
+            iteratorFn(key,value);
+        };
+    }
+
     // module loader setup
     function setupModuleLoader(window) {
 
