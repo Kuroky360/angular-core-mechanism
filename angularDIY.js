@@ -17,19 +17,31 @@
     }
     // shadow & deep
     function baseExtend(dst,external,deep){
-        var i;
-        forEach(external,function(value){
-            /*if(!deep){
-                for(i in value){
-                    dst[i]=value[i];
-                }
-            }else{
-                for(i in value){
-                    dst[i]=value[i];
-                }
-            }*/
+/*        var i,
+            tmp;
+        forEach(external,function(obj){
 
+            for(i in obj){
+                if(isObject(obj[i])){
+                    if(isArray(obj[i])){
+                        tmp=slice.call(obj[i]);
+                    }else if(isDate(obj[i])){
+                        tmp=new Date(obj[i].getTime());
+                    }else if(isRegExp(obj[i])){
+                        tmp=new RegExp(obj[i].source);
+                    }
+                }else{//primitive value
+                    tmp=obj[i];
+                }
+                if(deep){
+                    dst[i]=tmp;
+                }else{
+                    dst[i]=obj[i];
+                }
+
+            }
         });
+        return dst;*/
     }
 
     function shallowExtend(dst){
@@ -107,6 +119,9 @@
     }
 
     function isArray(value){ return Array.isArray(value);}
+
+    // check RegExp
+    function isRegExp(value){ return toString.call(value)==='[object RegExp]';}
 
     //reverse params
     function reverseParams(iteratorFn){
