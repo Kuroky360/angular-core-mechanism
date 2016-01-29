@@ -33,7 +33,7 @@
     }
 
     function shallowExtend(dst){
-        baseExtend(dst,slice.call(arguments,1),false);
+        return baseExtend(dst,slice.call(arguments,1),false);
     }
 
     function deepExtend(dst){
