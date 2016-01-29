@@ -4,6 +4,7 @@
 !function(window,document,undefined){
     // initial variable
     var angular=window.angular||{},
+        angularModule,
         toString=Object.prototype.toString,
         slice=[].slice,
         splice=[].splice,
@@ -15,8 +16,28 @@
 
     }
     // shadow & deep
-    function extend(){
+    function baseExtend(dst,external,deep){
+        var i;
+        forEach(external,function(value){
+            /*if(!deep){
+                for(i in value){
+                    dst[i]=value[i];
+                }
+            }else{
+                for(i in value){
+                    dst[i]=value[i];
+                }
+            }*/
 
+        });
+    }
+
+    function shallowExtend(dst){
+        baseExtend(dst,slice.call(arguments,1),false);
+    }
+
+    function deepExtend(dst){
+        return baseExtend(dst,slice.call(arguments,1),true);
     }
 
     ////////////////////////////////////
@@ -246,7 +267,7 @@
                 instanceCache.invoke(provider.$get,provider,undefined,serviceName);
             }));
         //forEach load modules
-        forEach(loadMoules(modulesToLoad),function(fn){if(fn) instanceInjector.invoke(fn);})
+        forEach(loadMoules(modulesToLoad),function(fn){if(fn) instanceInjector.invoke(fn);});
 
         ////////////////////////////////////
         // Module Loading
@@ -359,6 +380,10 @@
         }
     }
 
+    // expose angular
+    function publishExternalAPI(angular){
+
+    }
 
 }(window,document);
 
