@@ -9,6 +9,7 @@
         slice=[].slice,
         splice=[].splice,
         jqLite,
+        uid= 0,
         hasOwnProperty=Object.prototype.hasOwnProperty,
         getPrototypeOf=Object.getPrototypeOf;
     // shadow & deep
@@ -154,6 +155,10 @@
         if(isArray(obj)||isString(obj)||jqLite&&obj instanceof jqLite) return true;
         var length = 'length' in Object(obj)&&obj.length;
         return isNumber(length) && (length >=0 && (length-1) in obj ||typeof  obj.item ==='function');
+    }
+
+    function nextUid(){
+        return ++uid;
     }
 
     //forEach fn
