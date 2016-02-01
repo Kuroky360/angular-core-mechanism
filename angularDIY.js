@@ -65,6 +65,10 @@
     function deepExtend(dst){
         return baseExtend(dst,slice.call(arguments,1),true);
     }
+    // inherit
+    function inherit(parent,extra){
+        return shallowExtend(Object.create(parent),extra);
+    }
 
     ////////////////////////////////////
     // Error handler todo
