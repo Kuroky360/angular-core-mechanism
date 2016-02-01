@@ -17,6 +17,26 @@
 
     }
 
+    //shallow copy fn typically Array or Object
+    function shallowCopy(src,dst){
+        if(isArray(src)){
+            dst = dst || [];
+            for(var i= 0,ii=src.length;i<ii;i++){
+                dst[i]=src[i];
+            }
+        }else if(isObject(src)){
+            dst = dst||{};
+            for(var key in src){
+                if(!(key.charAt(0)==='$'&&key.charAt(1)==='$$')){//except $ $$ prefix for angular.
+                    dst[key]=src[key];
+                }
+            }
+        }
+
+        return dst||src;
+    }
+
+
     // a reference is DOM element or wrapped jQuery Element
     function isElement(node){
         return !!(node&&
