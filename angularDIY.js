@@ -16,39 +16,52 @@
     function copy(){
 
     }
+
+    // a reference is DOM element or wrapped jQuery Element
+    function isElement(node){
+        return !!(node&&
+            (node.nodeName|| //direct element
+                (node.attr&&node.prop&&node.find)
+            )
+        )
+    }
+
     // shadow & deep
-    function baseExtend(dst,external,deep){
-/*        var i,
-            tmp;
-        forEach(external,function(obj){
-
-            for(i in obj){
-                if(isObject(obj[i])){
-                    if(isArray(obj[i])){
-                        tmp=slice.call(obj[i]);
-                    }else if(isDate(obj[i])){
-                        tmp=new Date(obj[i].getTime());
-                    }else if(isRegExp(obj[i])){
-                        tmp=new RegExp(obj[i].source);
+    function baseExtend(dst,objs,deep){
+        var i, ii,j,jj,obj,src,keys,key;
+        for(i=0,ii=objs.length;i<ii;i++){
+            obj=objs[i];
+            if(!isObject(obj)&&!isFunciton(obj)) continue;
+            keys = Object.keys(obj);
+            for(j=0,jj=keys.length;j<jj;j++){
+                key=keys[j];
+                src=obj[key];
+                if(deep&&isObject(src)){
+                    if(isDate(src)){
+                        dst[key]=new Date(src.valueOf());
+                    }else if(isRegExp(src)){
+                        dst[key]=new RegExp(src);
+                    }else if(src.nodeName){
+                        dst[key]=src.cloneNode(true);
+                    }else if(isElement(src)){
+                        dst[key]=src.clone();
+                    }else{
+                        if(!isObject(dst[key])) dst[key]=isArray(dst[key])?[]:{};
+                        dst[key]=baseExtend(dst[key],[src],true);
                     }
-                }else{//primitive value
-                    tmp=obj[i];
-                }
-                if(deep){
-                    dst[i]=tmp;
-                }else{
-                    dst[i]=obj[i];
-                }
 
+                }else{//primitive value string number boolean...
+                    dst[key]=src;
+                }
             }
-        });
-        return dst;*/
+        }
+        return dst;
     }
 
     function shallowExtend(dst){
         return baseExtend(dst,slice.call(arguments,1),false);
     }
-
+    // deep merge
     function deepExtend(dst){
         return baseExtend(dst,slice.call(arguments,1),true);
     }
