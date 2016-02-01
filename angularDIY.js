@@ -447,7 +447,31 @@
 
     // expose angular
     function publishExternalAPI(angular){
-
+        shallowExtend(angular,{
+            noop:noop,
+            isFunction:isFunciton,
+            isArray:isArray,
+            isNumber:isNumber,
+            isDefined:isDefined,
+            isUndefined:isUndefined,
+            isString:isString,
+            isBlankObject:isBlankObject,
+            isRegExp:isRegExp,
+            isDate:isDate,
+            isObject:isObject,
+            isElement:isElement,
+            identity:identity,
+            fromJson:fromJson,
+            toJson:toJson,
+            copy:copy,
+            shallowExtend:shallowExtend,
+            deepExtend:deepExtend,
+            bootstrap:bootstrap,
+            createInjector:createInjector,
+            forEach:forEach,
+            lowercase:lowercase,
+            uppercase:uppercase
+        })
     }
 
 }(window,document);
