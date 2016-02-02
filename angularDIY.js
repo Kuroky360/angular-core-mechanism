@@ -540,9 +540,38 @@
         angularModule=setupModuleLoader(window);
         angularModule('ng',['ngLocale'],['$provide',function($provide){
            //todo
+            $provide.provider('$compile',$CompileProvider).directive({});//lots of directives
+            $provide.provider({});//lots of providers
         }]);
     }
+    //compileProvider
+    function $CompileProvider(){
+        this.directive=function(){};
+    }
+    //Promise
+    function Promise(){
+        this.$$state={status:0};
+    }
 
+    function Defferred(){
+
+    }
+
+    //q factory fn
+    function qFactory(nextTick,exceptionHandler){
+
+        var $Q;
+        //TODO
+        return $Q;
+    }
+    // qprovider
+    function $QProvider(){
+        this.get = ['$rootScope','$exceptionHandler',function($rootScope,$exceptionHandler){
+            return qFactory(function(callback){
+                $rootScope.$evalAsync(callback);
+            },$exceptionHandler)
+        }];
+    }
     //first check jquery
 
     //publish angular
