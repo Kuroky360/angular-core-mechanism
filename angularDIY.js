@@ -12,7 +12,14 @@
         jqLite,
         uid= 0,
         hasOwnProperty=Object.prototype.hasOwnProperty,
-        getPrototypeOf=Object.getPrototypeOf;
+        getPrototypeOf=Object.getPrototypeOf,
+        version={
+            full:'0.0.1',
+            major:0,
+            minor:0,
+            dot:1,
+            codeName:'DIY angularjs'
+        };
     // shadow & deep
     function copy(){
 
@@ -506,6 +513,7 @@
     function publishExternalAPI(angular){
         shallowExtend(angular,{
             noop:noop,
+            version:version,
             isFunction:isFunciton,
             isArray:isArray,
             isNumber:isNumber,
@@ -528,8 +536,18 @@
             forEach:forEach,
             lowercase:lowercase,
             uppercase:uppercase
-        })
+        });
+        angularModule=setupModuleLoader(window);
+        angularModule('ng',['ngLocale'],['$provide',function($provide){
+           //todo
+        }]);
     }
+
+    //first check jquery
+
+    //publish angular
+
+    //bootstrap when dom ready
 
 }(window,document);
 
