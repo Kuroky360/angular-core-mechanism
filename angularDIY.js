@@ -143,7 +143,17 @@
 
     function identity($){return $;}
 
-    function toJson(value){
+    //toJson
+    function toJson(obj,pretty){
+        if(isUndefined(obj)) return undefined;
+        if(!isNumber(pretty)){
+            pretty= pretty?2:null;
+        }
+        return JSON.stringify(obj,jsonReplacer,pretty);
+    }
+
+    function jsonReplacer(){
+     //todo
     }
 
     function valueFn(value){
