@@ -181,11 +181,22 @@
         if(!isNumber(pretty)){
             pretty= pretty?2:null;
         }
-        return JSON.stringify(obj,jsonReplacer,pretty);
+        return JSON.stringify(obj,toJsonReplacer,pretty);
     }
+    //toJsonReplacer
+    function toJsonReplacer(key,value){
+        var val=value;
+        if(isString(key)&&key.charAt(0)==='$'&&key.charAt(1)==='$'){//$$ no stringify
+            val=undefined;
+        }else if(isWindow(val)){
+            val='$WINDOW';
+        }else if(isScope(val)){
+            val='$SCOPE';
+        }else if(val&&val===document){
+            val='$DOCUMENT';
+        }
 
-    function jsonReplacer(){
-     //todo
+        return val;
     }
 
     function valueFn(value){
@@ -228,6 +239,10 @@
         return obj&&obj.window===obj;
     }
 
+    // isScope
+    function isScope(obj){
+        return obj&&obj.$evalAsync&&obj.$watch;
+    }
     // is ArrayLike NodeList arguments jqLite string
     function isArrayLike(obj){
         if(obj===null||isWindow(obj)) return false;
