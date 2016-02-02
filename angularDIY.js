@@ -8,6 +8,7 @@
         toString=Object.prototype.toString,
         slice=[].slice,
         splice=[].splice,
+        isArray=Array.isArray,
         jqLite,
         uid= 0,
         hasOwnProperty=Object.prototype.hasOwnProperty,
@@ -133,6 +134,37 @@
 
     function isDate(value){ toString.call(value)==='[object Date]'}
 
+    // isWindow
+    function isWindow(obj){
+        return obj&&obj.window===window;
+    }
+
+    //isFile
+    function isFile(obj){
+        return toString.call(obj)===='[object File]';
+    }
+
+    //isFormData
+    function isFormData(obj){
+        return toString.call(obj)==='[object FormData]';
+    }
+
+    //isBlob
+    function isBlob(obj){
+        return toString.call(obj)==='[object Blob]';
+    }
+
+    //isBoolean
+    function isBoolean(obj){
+        return typeof obj ==='boolean';
+    }
+
+    //isPromiseLike
+    function isPromiseLike(obj){
+        return obj&&isFunciton(obj.then);
+    }
+
+
     function lowercase(value){return isString(value)?value.toLowerCase():value}
 
     function uppercase(value){return isString(value)?value.toUpperCase():value}
@@ -174,7 +206,7 @@
         return keys;
     }
 
-    function isArray(value){ return Array.isArray(value);}
+    //function isArray(value){ return Array.isArray(value);}
 
     // check RegExp
     function isRegExp(value){ return toString.call(value)==='[object RegExp]';}
