@@ -8,10 +8,13 @@
         toString=Object.prototype.toString,
         slice=[].slice,
         splice=[].splice,
+        jQuery,
         jqLite,
+        msie,
         uid= 0,
         hasOwnProperty=Object.prototype.hasOwnProperty,
         getPrototypeOf=Object.getPrototypeOf;
+    msie=document.documentMode;
     // shadow & deep
     function copy(){
 
