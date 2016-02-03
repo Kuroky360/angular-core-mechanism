@@ -8,13 +8,18 @@
         toString=Object.prototype.toString,
         slice=[].slice,
         splice=[].splice,
-        jQuery,
+        isArray=Array.isArray,
         jqLite,
-        msie,
         uid= 0,
         hasOwnProperty=Object.prototype.hasOwnProperty,
-        getPrototypeOf=Object.getPrototypeOf;
-    msie=document.documentMode;
+        getPrototypeOf=Object.getPrototypeOf,
+        version={
+            full:'0.0.1',
+            major:0,
+            minor:0,
+            dot:1,
+            codeName:'DIY angularjs'
+        };
     // shadow & deep
     function copy(){
 
@@ -136,6 +141,37 @@
 
     function isDate(value){ toString.call(value)==='[object Date]'}
 
+    // isWindow
+    function isWindow(obj){
+        return obj&&obj.window===window;
+    }
+
+    //isFile
+    function isFile(obj){
+        return toString.call(obj)==='[object File]';
+    }
+
+    //isFormData
+    function isFormData(obj){
+        return toString.call(obj)==='[object FormData]';
+    }
+
+    //isBlob
+    function isBlob(obj){
+        return toString.call(obj)==='[object Blob]';
+    }
+
+    //isBoolean
+    function isBoolean(obj){
+        return typeof obj ==='boolean';
+    }
+
+    //isPromiseLike
+    function isPromiseLike(obj){
+        return obj&&isFunciton(obj.then);
+    }
+
+
     function lowercase(value){return isString(value)?value.toLowerCase():value}
 
     function uppercase(value){return isString(value)?value.toUpperCase():value}
@@ -146,7 +182,28 @@
 
     function identity($){return $;}
 
-    function toJson(value){
+    //toJson
+    function toJson(obj,pretty){
+        if(isUndefined(obj)) return undefined;
+        if(!isNumber(pretty)){
+            pretty= pretty?2:null;
+        }
+        return JSON.stringify(obj,toJsonReplacer,pretty);
+    }
+    //toJsonReplacer
+    function toJsonReplacer(key,value){
+        var val=value;
+        if(isString(key)&&key.charAt(0)==='$'&&key.charAt(1)==='$'){//$$ no stringify
+            val=undefined;
+        }else if(isWindow(val)){
+            val='$WINDOW';
+        }else if(isScope(val)){
+            val='$SCOPE';
+        }else if(val&&val===document){
+            val='$DOCUMENT';
+        }
+
+        return val;
     }
 
     function valueFn(value){
@@ -167,7 +224,7 @@
         return keys;
     }
 
-    function isArray(value){ return Array.isArray(value);}
+    //function isArray(value){ return Array.isArray(value);}
 
     // check RegExp
     function isRegExp(value){ return toString.call(value)==='[object RegExp]';}
@@ -189,6 +246,10 @@
         return obj&&obj.window===obj;
     }
 
+    // isScope
+    function isScope(obj){
+        return obj&&obj.$evalAsync&&obj.$watch;
+    }
     // is ArrayLike NodeList arguments jqLite string
     function isArrayLike(obj){
         if(obj===null||isWindow(obj)) return false;
@@ -452,6 +513,7 @@
     function publishExternalAPI(angular){
         shallowExtend(angular,{
             noop:noop,
+            version:version,
             isFunction:isFunciton,
             isArray:isArray,
             isNumber:isNumber,
@@ -474,8 +536,47 @@
             forEach:forEach,
             lowercase:lowercase,
             uppercase:uppercase
-        })
+        });
+        angularModule=setupModuleLoader(window);
+        angularModule('ng',['ngLocale'],['$provide',function($provide){
+           //todo
+            $provide.provider('$compile',$CompileProvider).directive({});//lots of directives
+            $provide.provider({});//lots of providers
+        }]);
     }
+    //compileProvider
+    function $CompileProvider(){
+        this.directive=function(){};
+    }
+    //Promise
+    function Promise(){
+        this.$$state={status:0};
+    }
+
+    function Defferred(){
+
+    }
+
+    //q factory fn
+    function qFactory(nextTick,exceptionHandler){
+
+        var $Q;
+        //TODO
+        return $Q;
+    }
+    // qprovider
+    function $QProvider(){
+        this.get = ['$rootScope','$exceptionHandler',function($rootScope,$exceptionHandler){
+            return qFactory(function(callback){
+                $rootScope.$evalAsync(callback);
+            },$exceptionHandler)
+        }];
+    }
+    //first check jquery
+
+    //publish angular
+
+    //bootstrap when dom ready
 
 }(window,document);
 
