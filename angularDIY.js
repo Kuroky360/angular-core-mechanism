@@ -9,6 +9,8 @@
         slice=[].slice,
         splice=[].splice,
         isArray=Array.isArray,
+        msie,
+        jQuery,
         jqLite,
         uid= 0,
         hasOwnProperty=Object.prototype.hasOwnProperty,
@@ -20,6 +22,8 @@
             dot:1,
             codeName:'DIY angularjs'
         };
+
+    msie = document.documentMode;
     // shadow & deep
     function copy(){
 
