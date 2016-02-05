@@ -262,6 +262,11 @@
         return isNumber(length) && (length >=0 && (length-1) in obj ||typeof  obj.item ==='function');
     }
 
+    // customToString
+    function hasCustomToString(obj){
+        return isFunciton(obj.toString)&&obj.toString!==toString;
+    }
+
     function nextUid(){
         return ++uid;
     }
