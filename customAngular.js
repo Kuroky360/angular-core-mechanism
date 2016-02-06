@@ -267,6 +267,11 @@
         return isFunciton(obj.toString)&&obj.toString!==toString;
     }
 
+    //sliceArgs
+    function sliceArgs(args,startIndex){
+        return slice.call(args,startIndex||0);
+    }
+
     function nextUid(){
         return ++uid;
     }
