@@ -281,6 +281,11 @@
         return ++uid;
     }
 
+    //includes
+    function includes(array,obj){
+        return Array.prototype.indexOf.call(array,obj)!== -1;
+    }
+
     //forEach fn
     function forEach(obj,iterator,context){
         var key,
