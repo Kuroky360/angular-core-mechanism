@@ -286,6 +286,15 @@
         return Array.prototype.indexOf.call(array,obj)!== -1;
     }
 
+    // array remove
+    function arrayRemove(array,value){
+        var index = array.indexOf(value);
+        if(index>=0){
+            array.splice(index,1);
+        }
+        return index;
+    }
+
     //forEach fn
     function forEach(obj,iterator,context){
         var key,
