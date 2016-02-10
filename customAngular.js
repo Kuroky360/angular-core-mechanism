@@ -24,6 +24,12 @@
         };
 
     msie = document.documentMode;
+
+    var NODE_TYPE_ELEMENT=1;
+    var NODE_TYPE_ATTRITUBE=2;
+    var NODE_TYPE_TEXT=3;
+    var NODE_TYPE_DOCUMENT=9;
+    var NODE_TYPE_DOCUMENT_FRAGMENT=11;
     // shadow & deep
     function copy(){
 
