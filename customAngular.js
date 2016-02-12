@@ -7,7 +7,7 @@
         angularModule,
         toString=Object.prototype.toString,
         slice=[].slice,
-        splice=[].splice,
+        splice=[].splice,f
         isArray=Array.isArray,
         msie,
         jQuery,
@@ -30,6 +30,11 @@
     var NODE_TYPE_TEXT=3;
     var NODE_TYPE_DOCUMENT=9;
     var NODE_TYPE_DOCUMENT_FRAGMENT=11;
+
+    // minErr
+    function minErr(module,errorConstructor){
+        //todo
+    }
     // shadow & deep
     function copy(){
 
