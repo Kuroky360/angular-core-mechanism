@@ -37,7 +37,7 @@
     }
     // shadow & deep
     function copy(){
-
+        // todo
     }
 
     //shallow copy fn typically Array or Object
