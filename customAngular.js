@@ -7,7 +7,7 @@
         angularModule,
         toString=Object.prototype.toString,
         slice=[].slice,
-        splice=[].splice,f
+        splice=[].splice,
         isArray=Array.isArray,
         msie,
         jQuery,
