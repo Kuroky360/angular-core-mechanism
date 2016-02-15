@@ -273,6 +273,11 @@
         return isNumber(length) && (length >=0 && (length-1) in obj ||typeof  obj.item ==='function');
     }
 
+    // trim fn
+    var trim = function(value){
+        return isString(value)?value.trim():value;
+    };
+
     // customToString
     function hasCustomToString(obj){
         return isFunciton(obj.toString)&&obj.toString!==toString;
