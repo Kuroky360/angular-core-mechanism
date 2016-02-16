@@ -356,6 +356,19 @@
         return Object.create(null);
     }
 
+    /**
+     * makeMap
+     * @param str 'key1,key2,...'
+     * @returns {object} in the form of {key1:true,key2:true,...}
+     */
+    function makeMap(str){
+        var obj={},items=str.split(','), i,j;
+        for(i=0,j=items.length;i<j;i++){
+            obj[items[i]]=true;
+        }
+        return obj;
+    }
+
     // module loader setup
     function setupModuleLoader(window) {
 
