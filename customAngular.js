@@ -69,6 +69,11 @@
         )
     }
 
+    // nodeName_ lowercase
+    function nodeName_(element){
+        return lowercase(element.nodeName||(element[0]&&element[0].nodeName));
+    }
+
     // shadow & deep
     function baseExtend(dst,objs,deep){
         var i, ii,j,jj,obj,src,keys,key;
