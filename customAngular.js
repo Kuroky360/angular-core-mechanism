@@ -131,6 +131,10 @@
     // Http $q promise todo
     ////////////////////////////////////
 
+    function $HttpProvider(){
+        //todo
+    }
+
     ////////////////////////////////////
     // dom selectors fn todo
     ////////////////////////////////////
@@ -608,7 +612,9 @@
         angularModule('ng',['ngLocale'],['$provide',function($provide){
            //todo
             $provide.provider('$compile',$CompileProvider).directive({});//lots of directives
-            $provide.provider({});//lots of providers
+            $provide.provider({
+                $http:$HttpProvider
+            });//lots of providers
         }]);
     }
     //compileProvider
