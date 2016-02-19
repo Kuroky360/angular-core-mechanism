@@ -613,7 +613,8 @@
            //todo
             $provide.provider('$compile',$CompileProvider).directive({});//lots of directives
             $provide.provider({
-                $http:$HttpProvider
+                $http:$HttpProvider,
+                $q:$QProvider
             });//lots of providers
         }]);
     }
