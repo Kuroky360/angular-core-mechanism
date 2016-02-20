@@ -614,7 +614,8 @@
             $provide.provider('$compile',$CompileProvider).directive({});//lots of directives
             $provide.provider({
                 $http:$HttpProvider,
-                $q:$QProvider
+                $q:$QProvider,
+                $log:$LogProvider
             });//lots of providers
         }]);
     }
@@ -646,6 +647,12 @@
             },$exceptionHandler)
         }];
     }
+
+    // logProvider
+    function $LogProvider(){
+        //todo
+    }
+
     //first check jquery
 
     //publish angular
