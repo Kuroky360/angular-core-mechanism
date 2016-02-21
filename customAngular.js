@@ -615,7 +615,8 @@
             $provide.provider({
                 $http:$HttpProvider,
                 $q:$QProvider,
-                $log:$LogProvider
+                $log:$LogProvider,
+                $rootScope:$RootScopeProvider
             });//lots of providers
         }]);
     }
@@ -653,6 +654,9 @@
         //todo
     }
 
+    function $RootScopeProvider(){
+        // todo
+    }
     //first check jquery
 
     //publish angular
