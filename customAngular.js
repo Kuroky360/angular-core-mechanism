@@ -618,7 +618,8 @@
                 $log:$LogProvider,
                 $rootScope:$RootScopeProvider,
                 $document:$DocumentProvider,
-                $parse:$ParseProvider
+                $parse:$ParseProvider,
+                $controller:$ControllerProvider
             });//lots of providers
         }]);
     }
@@ -666,6 +667,10 @@
     }
 
     function $ParseProvider(){
+        // todo
+    }
+
+    function $ControllerProvider(){
         // todo
     }
     //first check jquery
