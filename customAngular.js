@@ -620,7 +620,8 @@
                 $document:$DocumentProvider,
                 $parse:$ParseProvider,
                 $controller:$ControllerProvider,
-                $window:$WindowProvider
+                $window:$WindowProvider,
+                $timeout:$TimeoutProvider
             });//lots of providers
         }]);
     }
@@ -652,7 +653,10 @@
             },$exceptionHandler)
         }];
     }
-
+    // timeout
+    function $TimeoutProvider(){
+        // todo
+    }
     // logProvider
     function $LogProvider(){
         //todo
