@@ -622,7 +622,8 @@
                 $controller:$ControllerProvider,
                 $window:$WindowProvider,
                 $timeout:$TimeoutProvider,
-                $filter:$FilterProvider
+                $filter:$FilterProvider,
+                $browser:$BrowserProvider
             });//lots of providers
         }]);
     }
@@ -685,6 +686,10 @@
     }
 
     function $FilterProvider(){
+        // todo
+    }
+
+    function $BrowserProvider(){
         // todo
     }
     //first check jquery
