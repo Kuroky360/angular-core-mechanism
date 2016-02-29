@@ -623,7 +623,8 @@
                 $window:$WindowProvider,
                 $timeout:$TimeoutProvider,
                 $filter:$FilterProvider,
-                $browser:$BrowserProvider
+                $browser:$BrowserProvider,
+                $templateCache:$TemplateCacheProvider
             });//lots of providers
         }]);
     }
@@ -690,6 +691,10 @@
     }
 
     function $BrowserProvider(){
+        // todo
+    }
+
+    function $TemplateCacheProvider(){
         // todo
     }
     //first check jquery
