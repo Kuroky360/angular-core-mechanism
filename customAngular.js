@@ -625,7 +625,8 @@
                 $filter:$FilterProvider,
                 $browser:$BrowserProvider,
                 $templateCache:$TemplateCacheProvider,
-                $templateRequest:$TemplateRequestProvider
+                $templateRequest:$TemplateRequestProvider,
+                $xhrFactory:$xhrFactoryProvider
             });//lots of providers
         }]);
     }
@@ -657,6 +658,11 @@
             },$exceptionHandler)
         }];
     }
+
+    function $xhrFactoryProvider(){
+        //todo
+    }
+
     // timeout
     function $TimeoutProvider(){
         // todo
