@@ -626,7 +626,8 @@
                 $browser:$BrowserProvider,
                 $templateCache:$TemplateCacheProvider,
                 $templateRequest:$TemplateRequestProvider,
-                $xhrFactory:$xhrFactoryProvider
+                $xhrFactory:$xhrFactoryProvider,
+                $exceptionHandler:$ExceptionHandlerProvider
             });//lots of providers
         }]);
     }
@@ -657,6 +658,10 @@
                 $rootScope.$evalAsync(callback);
             },$exceptionHandler)
         }];
+    }
+
+    function $ExceptionHandlerProvider(){
+        //todo
     }
 
     function $xhrFactoryProvider(){
