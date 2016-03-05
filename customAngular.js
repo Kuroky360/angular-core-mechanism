@@ -628,7 +628,8 @@
                 $templateRequest:$TemplateRequestProvider,
                 $xhrFactory:$xhrFactoryProvider,
                 $exceptionHandler:$ExceptionHandlerProvider,
-                $httpBackend:$HttpBackendProvider
+                $httpBackend:$HttpBackendProvider,
+                $snifferProvider:$SnifferProvider
             });//lots of providers
         }]);
     }
@@ -636,6 +637,11 @@
     function $CompileProvider(){
         this.directive=function(){};
     }
+
+    function $SnifferProvider(){
+        // todo
+    }
+
     //Promise
     function Promise(){
         this.$$state={status:0};
