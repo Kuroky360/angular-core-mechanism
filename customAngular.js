@@ -462,12 +462,18 @@
                 throw new Error('can not found provider!');
             })),
             instanceCache={},
-            instanceInjector=(instanceCache.$injector=createInternalInjector(instanceCache,function(serviceName,caller){
+            protoInstanceInjector=createInternalInjector(instanceCache,function(serviceName,caller){
                 var provider = providerInjector.get(serviceName+providerSufix,caller);
                 instanceCache.invoke(provider.$get,provider,undefined,serviceName);
-            }));
+            }),
+            instanceInjector=protoInstanceInjector;
+        providerCache['$injector'+providerSufix]={$get:valueFn(protoInstanceInjector)};
+        var runBlocks=loadMoules(modulesToLoad);
+        instanceInjector=protoInstanceInjector.get('$injector');
         //forEach load modules
-        forEach(loadMoules(modulesToLoad),function(fn){if(fn) instanceInjector.invoke(fn);});
+        forEach(runBlocks,function(fn){if(fn) instanceInjector.invoke(fn);});
+
+        return instanceInjector;
 
         ////////////////////////////////////
         // Module Loading
