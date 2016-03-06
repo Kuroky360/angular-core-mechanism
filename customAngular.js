@@ -431,12 +431,16 @@
         var modules=modules||[],
             instaneInjector;
 
+        var defaultConfig={
+            strictDi:false
+        };
+        config=shallowExtend(defaultConfig,config);
         modules.unshift('ng');
         modules.push(['$provide',function($provide){
             $provide.value('$rootElement',element);
         }]);
 
-        instaneInjector = createInjector(modules);
+        instaneInjector = createInjector(modules,config.strictDi);
     }
 
     // annotate fn
@@ -446,7 +450,8 @@
     }
 
     //injector creator
-    function createInjector(modulesToLoad){
+    function createInjector(modulesToLoad,strictDi){
+        strictDi = (strictDi === true);
         var providerSufix='Provider',
             INSTANTING={},
             path=[],
@@ -470,6 +475,7 @@
         providerCache['$injector'+providerSufix]={$get:valueFn(protoInstanceInjector)};
         var runBlocks=loadMoules(modulesToLoad);
         instanceInjector=protoInstanceInjector.get('$injector');
+        instanceInjector.strictDi=strictDi;
         //forEach load modules
         forEach(runBlocks,function(fn){if(fn) instanceInjector.invoke(fn);});
 
