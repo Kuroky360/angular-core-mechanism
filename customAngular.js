@@ -390,8 +390,8 @@
         return ensure(angular, 'module', function () {
             var modules = {};
 
-            return function module(name, require, config) {
-                if (require && modules.hasOwnProperty(name)) {
+            return function module(name, requires, config) {
+                if (requires && modules.hasOwnProperty(name)) {
                     modules[name] = null;
                 }
                 return ensure(modules, name, function () {
@@ -400,10 +400,10 @@
                     var runBlocks=[];
                     var moduleInstance={
                         _invokeQueue:invokeQueue,
-                        _configBlock:configBlocks,
+                        _configBlocks:configBlocks,
                         _runBlocks:runBlocks,
-                        _require:require,
-                        _name:name
+                        requires:requires,
+                        name:name
                     };
 
                     function invokeLater(provider,method,insertMethod,queue){
@@ -485,8 +485,33 @@
         // Module Loading
         ////////////////////////////////////
         function loadMoules(modules){
-            var runBlocks=[];
-            //todo
+            var runBlocks=[],ngModule;
+            forEach(modules,function(module){
+                function invokeQueue(queueArray){
+                    for(var i= 0,ii=queueArray.length;i<ii;i++){
+                        var task=queueArray[i];
+                        for(var j= 0,jj=task.length;j<jj;j++){
+                            var provider=providerInjector.get(task[0]);
+                            provider[task[1]].apply(provider,task[2]);
+                        }
+                    }
+                }
+
+                if(isString(module)){
+                    ngModule=angularModule(module);// get module
+                    runBlocks.concat(loadMoules(ngModule._require)).concat(ngModule._runBlocks);
+                    invokeQueue(ngModule._invokeQueue);
+                    invokeQueue(ngModule._configBlocks)
+                }else if(isArray(module)){
+                    runBlocks.push(providerInjector.invoke(module));
+                }else if(isFunciton(module)){
+                    runBlocks.push(providerInjector.invoke(module));
+                }else{
+                    // todo
+                }
+
+            });
+
             return runBlocks;
         }
 
