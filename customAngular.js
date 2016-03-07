@@ -390,7 +390,7 @@
         return ensure(angular, 'module', function () {
             var modules = {};
 
-            return function module(name, requires, config) {
+            return function module(name, requires, configFn) {
                 if (requires && modules.hasOwnProperty(name)) {
                     modules[name] = null;
                 }
@@ -404,10 +404,20 @@
                         _configBlocks:configBlocks,
                         _runBlocks:runBlocks,
                         requires:requires,
-                        name:name
-                        /*config:config,
-                        provider:invokeLaterAndSetModuleName('$provide','provider')*/
+                        name:name,
+                        config:config,
+                        provider:invokeLaterAndSetModuleName('$provide','provider'),
+                        factory:invokeLaterAndSetModuleName('$provide','factory'),
+                        service:invokeLaterAndSetModuleName('$provide','service'),
+                        constant:invokeLater('$provide','constant','unshift'),
+                        value:invokeLater('$provide','value'),
+                        //controller:invokeLaterAndSetModuleName('$controllerProvider','todo'),
+                        directive:invokeLaterAndSetModuleName('$compileProvider','directive')
+                        //component:invokeLaterAndSetModuleName()
                     };
+                    if(configFn){
+                        config(configFn);
+                    }
 
                     function invokeLater(provider,method,insertMethod,queue){
                         if(!queue) queue=invokeQueue;
