@@ -623,6 +623,7 @@
         angularModule=setupModuleLoader(window);
         angularModule('ng',['ngLocale'],['$provide',function($provide){
            //todo
+            $provide.provider({$$sanitizeUri:$$SanitizeUriProvider});
             $provide.provider('$compile',$CompileProvider).directive({});//lots of directives
             $provide.provider({
                 $http:$HttpProvider,
@@ -735,6 +736,10 @@
 
     function $TemplateRequestProvider(){
 
+    }
+
+    function $$SanitizeUriProvider(){
+        // todo
     }
     //first check jquery
 
