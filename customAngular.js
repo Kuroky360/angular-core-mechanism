@@ -398,12 +398,15 @@
                     var invokeQueue=[];
                     var configBlocks=[];
                     var runBlocks=[];
+                    var config=invokeLater('$injector','invoke','push',configBlocks);
                     var moduleInstance={
                         _invokeQueue:invokeQueue,
                         _configBlocks:configBlocks,
                         _runBlocks:runBlocks,
                         requires:requires,
                         name:name
+                        /*config:config,
+                        provider:invokeLaterAndSetModuleName('$provide','provider')*/
                     };
 
                     function invokeLater(provider,method,insertMethod,queue){
@@ -415,8 +418,8 @@
                     }
 
                     function invokeLaterAndSetModuleName(provider,method){
-                        if(isFunciton(method)) method.$$moduleName=name;
-                        return function(recipeName,factoryName){
+                        return function(recipeName,factoryFn){
+                            if(factoryFn&&isFunciton(factoryFn)) factoryFn.$$moduleName=name;
                             invokeQueue.push([provider,method,arguments]);
                             return moduleInstance;
                         };
