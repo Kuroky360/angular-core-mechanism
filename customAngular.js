@@ -485,23 +485,22 @@
         // Module Loading
         ////////////////////////////////////
         function loadMoules(modules){
-            var runBlocks=[],ngModule;
+            var runBlocks=[],moduleFn;
             forEach(modules,function(module){
-                function invokeQueue(queueArray){
-                    for(var i= 0,ii=queueArray.length;i<ii;i++){
-                        var task=queueArray[i];
-                        for(var j= 0,jj=task.length;j<jj;j++){
-                            var provider=providerInjector.get(task[0]);
-                            provider[task[1]].apply(provider,task[2]);
-                        }
+                function runInvokeQueue(queue){
+                    var i,ii,invokeArgs,provider;
+                    for(i= 0,ii=queue.length;i<ii;i++){
+                        invokeArgs=queue[i];
+                        provider=providerInjector.get(invokeArgs[0]);
+                        provider[invokeArgs[1]].apply(provider,invokeArgs[3]);
                     }
                 }
 
                 if(isString(module)){
-                    ngModule=angularModule(module);// get module
-                    runBlocks.concat(loadMoules(ngModule._require)).concat(ngModule._runBlocks);
-                    invokeQueue(ngModule._invokeQueue);
-                    invokeQueue(ngModule._configBlocks)
+                    moduleFn=angularModule(module);// get module
+                    runBlocks.concat(loadMoules(moduleFn.requires)).concat(moduleFn._runBlocks);
+                    runInvokeQueue(moduleFn._invokeQueue);
+                    runInvokeQueue(moduleFn._configBlocks)
                 }else if(isArray(module)){
                     runBlocks.push(providerInjector.invoke(module));
                 }else if(isFunciton(module)){
@@ -509,7 +508,6 @@
                 }else{
                     // todo
                 }
-
             });
 
             return runBlocks;
