@@ -412,8 +412,8 @@
                         constant:invokeLater('$provide','constant','unshift'),
                         value:invokeLater('$provide','value'),
                         controller:invokeLaterAndSetModuleName('$controllerProvider','register'),
-                        directive:invokeLaterAndSetModuleName('$compileProvider','directive')
-                        //component:invokeLaterAndSetModuleName()
+                        directive:invokeLaterAndSetModuleName('$compileProvider','directive'),
+                        component:invokeLaterAndSetModuleName()
                     };
                     if(configFn){
                         config(configFn);
