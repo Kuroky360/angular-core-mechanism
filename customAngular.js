@@ -411,7 +411,7 @@
                         service:invokeLaterAndSetModuleName('$provide','service'),
                         constant:invokeLater('$provide','constant','unshift'),
                         value:invokeLater('$provide','value'),
-                        //controller:invokeLaterAndSetModuleName('$controllerProvider','todo'),
+                        controller:invokeLaterAndSetModuleName('$controllerProvider','register'),
                         directive:invokeLaterAndSetModuleName('$compileProvider','directive')
                         //component:invokeLaterAndSetModuleName()
                     };
