@@ -752,7 +752,13 @@
     }
 
     function $ControllerProvider(){
-        // todo
+
+        this.register=function(){
+
+        };
+        this.component= function () {
+
+        };
     }
 
     function $WindowProvider(){
