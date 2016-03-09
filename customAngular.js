@@ -791,9 +791,7 @@
     }
 
     function $WindowProvider(){
-        this.$get=function(){
-            return window;
-        };
+        this.$get=valueFn(window);
     }
 
     function $FilterProvider(){
