@@ -791,7 +791,9 @@
     }
 
     function $WindowProvider(){
-        // todo
+        this.$get=function(){
+            return window;
+        };
     }
 
     function $FilterProvider(){
