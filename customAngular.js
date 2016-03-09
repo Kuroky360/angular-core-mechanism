@@ -704,8 +704,30 @@
     //q factory fn
     function qFactory(nextTick,exceptionHandler){
 
+        function Promise(){
+            this.$$state={status:0};
+        }
+
+        shallowExtend(Promise.prototype,{
+            then:function(onFulfilled,onRejected,progressBack){
+                var result=new Deferred();
+                this.$$state.pending=this.$$state.pending||[];
+                this.$$state.pending.push([result,onFulfilled,onRejected,progressBack]);
+                return result.promise;
+            },
+            'catch':function(callback){
+                return this.then(null,callback);
+            },
+            'finally':function(){
+                // todo
+            }
+        });
+
+        function Deferred(){
+            this.promse=new Promise();
+        }
+
         var $Q;
-        //TODO
         return $Q;
     }
     // qprovider
