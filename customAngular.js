@@ -771,7 +771,9 @@
 
     // documentProvider
     function $DocumentProvider(){
-        // todo
+        this.$get=['$window',function(window){
+            return jqLite(window.document);
+        }];
     }
 
     function $ParseProvider(){
