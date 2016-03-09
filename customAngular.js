@@ -710,6 +710,9 @@
 
         shallowExtend(Promise.prototype,{
             then:function(onFulfilled,onRejected,progressBack){
+                if(isUndefined(onFulfilled)&&isUndefined(onRejected)&&isUndefined(progressBack)){
+                    return this;
+                }
                 var result=new Deferred();
                 this.$$state.pending=this.$$state.pending||[];
                 this.$$state.pending.push([result,onFulfilled,onRejected,progressBack]);
@@ -726,6 +729,8 @@
         function Deferred(){
             this.promse=new Promise();
         }
+
+
 
         var $Q;
         return $Q;
