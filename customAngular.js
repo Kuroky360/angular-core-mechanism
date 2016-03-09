@@ -443,7 +443,7 @@
     //bootstrap fn
     function bootstrap(element,modules,config){
         var modules=modules||[],
-            instaneInjector;
+            instanceInjector;
 
         var defaultConfig={
             strictDi:false
@@ -454,7 +454,7 @@
             $provide.value('$rootElement',element);
         }]);
 
-        instaneInjector = createInjector(modules,config.strictDi);
+        instanceInjector = createInjector(modules,config.strictDi);
     }
 
     // annotate fn
