@@ -45,16 +45,16 @@
         if (isFunciton(fn)) {
             return curryArgs.length
                 ? function () {
-                return arguments.length
-                    ? fn.apply(self, concat(curryArgs, arguments, 0))
-                    : fn.apply(self, curryArgs);
-            }
+                    return arguments.length
+                          ? fn.apply(self, concat(curryArgs, arguments, 0))
+                          : fn.apply(self, curryArgs);
+                  }
                 : function () {
-                return arguments.length
-                    ? fn.apply(self, arguments)
-                    : fn.call(self);
+                    return arguments.length
+                           ? fn.apply(self, arguments)
+                           : fn.call(self);
 
-            }
+                  }
         } else {
             return fn;
         }
@@ -747,7 +747,12 @@
             reject:function(){}
             //todo
         });
-
+        
+        function simpleBind(context,fn){
+            return function(value){
+                return fn.call(context,value);
+            };
+        }
 
         var $Q;
         return $Q;
