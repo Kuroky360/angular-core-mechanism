@@ -692,15 +692,6 @@
         // todo
     }
 
-    //Promise
-    function Promise(){
-        this.$$state={status:0};
-    }
-
-    function Defferred(){
-
-    }
-
     //q factory fn
     function qFactory(nextTick,exceptionHandler){
 
@@ -727,9 +718,15 @@
         });
 
         function Deferred(){
-            this.promse=new Promise();
+            this.promise=new Promise();
         }
 
+        shallowExtend(Deferred.prototype,{
+            resolve:function(){},
+            $$resolve:function(){},
+            reject:function(){}
+            //todo
+        });
 
 
         var $Q;
