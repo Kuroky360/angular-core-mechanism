@@ -773,7 +773,15 @@
         var handleCallback=function(value,isResolved,callback){
             var callbackOutput;
             if(isFunciton(callback)) callbackOutput=callback();
-            // todo
+            if(isPromiseLike(callbackOutput)){
+                return callbackOutput.then(function(){
+                    return makePromise(value,isResolved);
+                },function(error){
+                    return makePromise(error,false);
+                });
+            }else{
+                return makePromise(value,isResolved);
+            }
         };
 
         return $Q;
