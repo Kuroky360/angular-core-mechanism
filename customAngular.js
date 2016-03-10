@@ -732,8 +732,12 @@
             'catch':function(callback){
                 return this.then(null,callback);
             },
-            'finally':function(){
-                // todo
+            'finally':function(callback,progressBack){
+                return this.then(function(value){
+                    return handleCallback(value,true,callback);
+                },function(error){
+                    return handleCallback(error,false,callback);
+                },progressBack);
             }
         });
 
@@ -764,6 +768,12 @@
                 result.reject(value);
             }
             return result.promise;
+        };
+
+        var handleCallback=function(value,isResolved,callback){
+            var callbackOutput;
+            if(isFunciton(callback)) callbackOutput=callback();
+            // todo
         };
 
         return $Q;
