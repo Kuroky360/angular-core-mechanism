@@ -39,6 +39,26 @@
     function copy(){
         // todo
     }
+    // returns a function which calls function `fn` bound to self.
+    function bind(self,fn){
+        var curryArgs=arguments.length>2?sliceArgs(arguments,2):[];
+        if(isFunciton(fn)){
+            return curryArgs.length?
+                function(){
+                    return arguments.length?
+                        fn.apply(self,concat(curryArgs,arguments,0)):
+                        fn.apply(self,curryArgs);
+                }:
+                function(){
+                    return arguments.length?
+                        fn.apply(self,arguments):
+                        fn.call(self);
+
+                }
+        }else{
+            return fn;
+        }
+    }
 
     //shallow copy fn typically Array or Object
     function shallowCopy(src,dst){
