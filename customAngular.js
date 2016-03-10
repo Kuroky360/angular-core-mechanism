@@ -747,7 +747,7 @@
             reject:function(){}
             //todo
         });
-        
+
         function simpleBind(context,fn){
             return function(value){
                 return fn.call(context,value);
@@ -755,6 +755,17 @@
         }
 
         var $Q;
+
+        var makePromise= function (value,isResolved) {
+            var result=new Deferred();
+            if(isResolved){
+                result.resolve(value);
+            }else{
+                result.reject(value);
+            }
+            return result.promise;
+        };
+
         return $Q;
     }
     // qprovider
