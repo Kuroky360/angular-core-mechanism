@@ -746,10 +746,23 @@
         }
 
         shallowExtend(Deferred.prototype,{
-            resolve:function(){},
-            $$resolve:function(){},
-            reject:function(){}
-            //todo
+            resolve:function(val){
+                if(this.promise.$$state.status) return;
+                if(this.promise===val){
+                    throw new Error('should be resolved with value other than itself.');
+                }else {
+                    this.$$resolve(val);
+                }
+
+            },
+            $$resolve:function(val){
+            },
+            reject:function(){},
+            $$reject:function(){},
+            notify:function(){
+                //todo
+            }
+
         });
 
         function simpleBind(context,fn){
