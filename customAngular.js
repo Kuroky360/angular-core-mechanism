@@ -816,6 +816,12 @@
 
         var $Q;
 
+        var reject=function(reason){
+            var result=new Deferred();
+            result.reject(reason);
+            return result.promise;
+        };
+
         var makePromise= function (value,isResolved) {
             var result=new Deferred();
             if(isResolved){
