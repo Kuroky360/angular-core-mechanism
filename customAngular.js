@@ -727,6 +727,7 @@
                 var result=new Deferred();
                 this.$$state.pending=this.$$state.pending||[];
                 this.$$state.pending.push([result,onFulfilled,onRejected,progressBack]);
+                if(this.$$state.status>0) scheduleProcessQueue(this.$$state);
                 return result.promise;
             },
             'catch':function(callback){
