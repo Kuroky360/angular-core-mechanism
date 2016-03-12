@@ -741,6 +741,30 @@
             }
         });
 
+        function processQueue(state){
+            var fn,pending,deferred,i,ii;
+            pending=state.pending;
+            state.pending=undefined;
+            state.processScheduled=false;
+            for(i=0,ii=pending.length;i<ii;i++){
+                deferred=pending[i][0];
+                fn=pending[i][state.status];
+                if(isFunciton(fn)){
+                    deferred.resolve(fn(state.value));
+                }else if(state.status===1){
+                    deferred.resolve(state.value);
+                }else {
+                    deferred.reject(state.value);
+                }
+            }
+        }
+
+        function scheduleProcessQueue(state){
+            if(state.processScheduled||!state.pending) return;
+            state.processScheduled=true;
+            nextTick(function(){processQueue(state);})
+        }
+
         function Deferred(){
             this.promise=new Promise();
         }
@@ -756,9 +780,27 @@
 
             },
             $$resolve:function(val){
+                var that=this,
+                    done=false,
+                    then;
+                if(isObject(val)||isFunciton(val)) then=val&&val.then;
+                if(isFunciton(val)){
+                    //todo
+                }else{
+                    this.promise.$$state.value=val;
+                    this.promise.$$state.status=1;
+                    scheduleProcessQueue(this.promise.$$state);
+                }
             },
-            reject:function(){},
-            $$reject:function(){},
+            reject:function(reason){
+                if(this.promise.$$state.status) return;
+                this.$$reject(reason);
+            },
+            $$reject:function(reason){
+                this.promise.$$state.value=reason;
+                this.promise.$$state.status=2;
+                scheduleProcessQueue(this.promise.$$state);
+            },
             notify:function(){
                 //todo
             }
