@@ -846,6 +846,13 @@
             }
         };
 
+        // wrap value into $q promise.
+        var when=function(value,callback,errback,processBack){
+            var result = new Deferred();
+            result.resolve(value);
+            return result.promise.then(callback,errback,processBack);
+        };
+
         return $Q;
     }
     // qprovider
