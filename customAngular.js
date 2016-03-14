@@ -814,8 +814,6 @@
             };
         }
 
-        var $Q;
-
         var reject=function(reason){
             var result=new Deferred();
             result.reject(reason);
@@ -851,6 +849,13 @@
             var result = new Deferred();
             result.resolve(value);
             return result.promise.then(callback,errback,processBack);
+        };
+
+        // to maintain naming consistency.
+        var resolve=when;
+
+        var $Q=function Q(resolver){
+            // todo
         };
 
         return $Q;
