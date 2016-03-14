@@ -855,8 +855,35 @@
         var resolve=when;
 
         var $Q=function Q(resolver){
-            // todo
+            if(!isFunciton(resolver)){
+                throw new Error('expected resolverFn');
+            }
+            var deferred=new Deferred();
+            function resolveFn(value){
+                deferred.resolve(value);
+            }
+            function rejectFn(reason){
+                deferred.reject(reason);
+            }
+            resolver(resolveFn,rejectFn);
+            return deferred.promise;
         };
+
+        var defer = function(){
+            var d=new Deferred();
+            d.resolve=simpleBind(d,d.resolve);
+            d.reject=simpleBind(d,d.reject);
+            d.notify=simpleBind(d,d.notify);
+            return d;
+        };
+
+        // make the instanceof operator work for promises.
+        $Q.prototype=Promise.prototype;
+
+        $Q.reject=reject;
+        $Q.defer=defer;
+        $Q.when=when;
+        $Q.resolve=resolve;
 
         return $Q;
     }
