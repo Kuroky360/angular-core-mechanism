@@ -871,6 +871,7 @@
 
         var defer = function(){
             var d=new Deferred();
+            // necessary to support unbound excution.
             d.resolve=simpleBind(d,d.resolve);
             d.reject=simpleBind(d,d.reject);
             d.notify=simpleBind(d,d.notify);
