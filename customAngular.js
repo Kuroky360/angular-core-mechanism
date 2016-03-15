@@ -1041,6 +1041,3 @@
     //bootstrap when dom ready
 
 }(window,document);
-
-
-
