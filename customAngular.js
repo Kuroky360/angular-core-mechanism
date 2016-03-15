@@ -712,6 +712,11 @@
         // todo
     }
 
+    //Browser constructor
+    function Browser(window,document,$log,$sniffer){
+        // todo
+    }
+
     //q factory fn
     function qFactory(nextTick,exceptionHandler){
 
@@ -951,8 +956,11 @@
         // todo
     }
 
+    // browser provider
     function $BrowserProvider(){
-        // todo
+        this.$get=['$window','$log','$document','$sniffer',function($window,$log,$document,$sniffer){
+            return new Browser($window,$document,$log,$sniffer);
+        }];
     }
 
     function $TemplateCacheProvider(){
