@@ -790,13 +790,27 @@
                     done=false,
                     then;
                 if(isObject(val)||isFunciton(val)) then=val&&val.then;
-                if(isFunciton(val)){
-                    //todo
+                if(isFunciton(then)){
+                    this.promise.$$state.status=-1;
+                    then.call(val,resolvePromise,rejectPromise,simpleBind(this,this.notify));
                 }else{
                     this.promise.$$state.value=val;
                     this.promise.$$state.status=1;
                     scheduleProcessQueue(this.promise.$$state);
                 }
+
+                function resolvePromise(value){
+                    if(done) return;
+                    done=true;
+                    that.$$resolve(value);
+                }
+
+                function rejectPromise(reason){
+                    if(done) return;
+                    done=true;
+                    that.$$reject(reason);
+                }
+
             },
             reject:function(reason){
                 if(this.promise.$$state.status) return;
