@@ -960,7 +960,27 @@
     }
     // logProvider
     function $LogProvider(){
-        //todo
+        var debug=true,
+            self=this;
+        /**
+         *
+         * @param flag enable or disable debug level messages
+         * @returns {*} current value if used as getter or itself(chaining) if used as setter
+         */
+        this.debugEnabled= function (flag) {
+            if(isUndefined(flag)){
+                return debug;
+            }else{
+                debug=flag;
+                return this;
+            }
+        };
+
+        this.$get=['$window', function ($window) {
+            // todo
+        }];
+
+
     }
 
     function $RootScopeProvider(){
