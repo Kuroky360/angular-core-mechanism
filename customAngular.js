@@ -1005,10 +1005,7 @@
     function $ControllerProvider(){
 
         this.register=function(){
-
-        };
-        this.component= function () {
-
+            
         };
     }
 
