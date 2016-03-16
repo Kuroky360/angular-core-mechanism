@@ -1003,10 +1003,24 @@
     }
 
     function $ControllerProvider(){
+        var controllers={},
+            globals=false;
 
-        this.register=function(){
-            
+        this.allowGlobals= function () {
+            globals=true;
         };
+
+        this.register=function(name,constructor){
+            if(isObject(name)){
+                shallowExtend(controllers,name);
+            }else{
+                controllers[name]=constructor;
+            }
+        };
+
+        this.$get=['$injector','$window', function ($injector, $window) {
+            // todo
+        }];
     }
 
     function $WindowProvider(){
