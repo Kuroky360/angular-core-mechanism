@@ -947,7 +947,11 @@
     }
 
     function $ExceptionHandlerProvider(){
-        //todo
+        this.$get=['$log', function ($log) {
+            return function(exception,cause){
+                $log.error.apply($log,arguments);
+            };
+        }];
     }
 
     function $xhrFactoryProvider(){
