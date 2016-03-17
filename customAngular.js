@@ -80,6 +80,11 @@
     }
 
 
+    function reloadWithDebugInfo(){
+        window.name='NG_ENABLE_DEBUG_INFO!'+window.name;
+        window.location.reload();
+    }
+
     // a reference is DOM element or wrapped jQuery Element
     function isElement(node){
         return !!(node&&
@@ -652,30 +657,31 @@
     // expose angular
     function publishExternalAPI(angular){
         shallowExtend(angular,{
-            noop:noop,
-            version:version,
-            isFunction:isFunciton,
-            isArray:isArray,
-            isNumber:isNumber,
-            isDefined:isDefined,
-            isUndefined:isUndefined,
-            isString:isString,
-            isBlankObject:isBlankObject,
-            isRegExp:isRegExp,
-            isDate:isDate,
-            isObject:isObject,
-            isElement:isElement,
-            identity:identity,
-            fromJson:fromJson,
-            toJson:toJson,
-            copy:copy,
-            shallowExtend:shallowExtend,
-            deepExtend:deepExtend,
-            bootstrap:bootstrap,
-            createInjector:createInjector,
-            forEach:forEach,
-            lowercase:lowercase,
-            uppercase:uppercase
+            'noop':noop,
+            'version':version,
+            'isFunction':isFunciton,
+            'isArray':isArray,
+            'isNumber':isNumber,
+            'isDefined':isDefined,
+            'isUndefined':isUndefined,
+            'isString':isString,
+            'isBlankObject':isBlankObject,
+            'isRegExp':isRegExp,
+            'isDate':isDate,
+            'isObject':isObject,
+            'isElement':isElement,
+            'identity':identity,
+            'fromJson':fromJson,
+            'toJson':toJson,
+            'copy':copy,
+            'shallowExtend':shallowExtend,
+            'deepExtend':deepExtend,
+            'bootstrap':bootstrap,
+            'createInjector':createInjector,
+            'forEach':forEach,
+            'lowercase':lowercase,
+            'uppercase':uppercase,
+            'reloadWithDebugInfo':reloadWithDebugInfo
         });
         angularModule=setupModuleLoader(window);
         angularModule('ng',['ngLocale'],['$provide',function($provide){
