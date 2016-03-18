@@ -691,6 +691,7 @@
             $provide.provider({
                 $http:$HttpProvider,
                 $q:$QProvider,
+                $$q:$$QProvider,
                 $log:$LogProvider,
                 $rootScope:$RootScopeProvider,
                 $document:$DocumentProvider,
@@ -944,6 +945,14 @@
         this.get = ['$rootScope','$exceptionHandler',function($rootScope,$exceptionHandler){
             return qFactory(function(callback){
                 $rootScope.$evalAsync(callback);
+            },$exceptionHandler)
+        }];
+    }
+    
+    function $$QProvider(){
+        this.get = ['$browser','$exceptionHandler',function($browser,$exceptionHandler){
+            return qFactory(function(callback){
+                $browser.defer(callback);
             },$exceptionHandler)
         }];
     }
