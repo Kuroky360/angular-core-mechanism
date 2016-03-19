@@ -711,7 +711,8 @@
         }]);
     }
     //compileProvider
-    function $CompileProvider(){
+    $CompileProvider.$inject=['$provide','$$sanitizeUriProvider'];
+    function $CompileProvider($provide,$$sanitizeUriProvider){
         this.directive=function(){};
     }
 
