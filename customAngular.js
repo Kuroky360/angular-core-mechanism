@@ -32,8 +32,13 @@
     var NODE_TYPE_DOCUMENT_FRAGMENT=11;
 
     // minErr
-    function minErr(module,errorConstructor){
-        //todo
+    function minErr(module,ErrorConstrucor){
+        ErrorConstrucor=ErrorConstrucor||Error;
+        return function(){
+            var message;
+            //todo
+            return new ErrorConstrucor(message);
+        };
     }
     // shadow & deep
     function copy(){
