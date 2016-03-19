@@ -36,6 +36,7 @@
         ErrorConstrucor=ErrorConstrucor||Error;
         return function(){
             var message;
+            var SKIP_INDEXS=2;
             //todo
             return new ErrorConstrucor(message);
         };
