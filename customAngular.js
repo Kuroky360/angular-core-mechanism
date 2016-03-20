@@ -35,13 +35,34 @@
     function minErr(module, ErrorConstrucor) {
         ErrorConstrucor = ErrorConstrucor || Error;
         return function () {
-            var message;
             var SKIP_INDEXS = 2;
+            var templateArgs=arguments,
+                code=templateArgs[0],
+                message='['+(module?module+':':'')+code+'] ',
+                template=templateArgs[1],
+                paramPrefix,i;
+
+            message+=message.replace(/\{\d+\}/g, function (match) {
+                var index=+match.slice(1,-1),
+                    shiftedIndex=index+SKIP_INDEXS;
+                if(shiftedIndex<templateArgs.length){
+                    return toDebugString(templateArgs[shiftedIndex]);
+                }
+                return match;// for fewer arguments than necessary
+            });
+
+            message+='\nXXX/'+(module?module+'/':'')+code;// link url for lookup detail
+
+            // build params
+            for(i=SKIP_INDEXS,paramPrefix='?',i<templateArgs.length;i++,paramPrefix='&'){
+                message+=paramPrefix+'p'+(i-SKIP_INDEXS)+'='+
+                    encodeURIComponent(toDebugString(templateArgs[i]));
+            }
             //todo
             return new ErrorConstrucor(message);
         };
     }
-    
+
     function toDebugString(obj) {
         if(isFunciton(obj)){
             return obj.toString().replace(/ \{[\s\S]*$/,'');
