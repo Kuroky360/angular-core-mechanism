@@ -21,7 +21,8 @@
             minor:0,
             dot:1,
             codeName:'DIY angularjs'
-        };
+        },
+        $injectorMinErr=minErr('$injector');
 
     msie = document.documentMode;
 
@@ -543,7 +544,10 @@
                 }
             },
             providerInjector=(providerCache.$injector=createInternalInjector(providerCache,function(seviceName,caller){
-                throw new Error('can not found provider!');
+                if(angular.isString(caller)){
+                    path.push(caller);
+                }
+                throw $injectorMinErr('unpr','unKnown provider: {0}',path.join(' <- '));
             })),
             instanceCache={},
             protoInstanceInjector=createInternalInjector(instanceCache,function(serviceName,caller){
