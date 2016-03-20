@@ -32,15 +32,28 @@
     var NODE_TYPE_DOCUMENT_FRAGMENT=11;
 
     // minErr
-    function minErr(module,ErrorConstrucor){
-        ErrorConstrucor=ErrorConstrucor||Error;
-        return function(){
+    function minErr(module, ErrorConstrucor) {
+        ErrorConstrucor = ErrorConstrucor || Error;
+        return function () {
             var message;
-            var SKIP_INDEXS=2;
+            var SKIP_INDEXS = 2;
             //todo
             return new ErrorConstrucor(message);
         };
     }
+    
+    function toDebugString(obj) {
+        if(isFunciton(obj)){
+            return obj.toString().replace(/ \{[\s\S]*$/,'');
+        }else if(isUndefined(obj)){
+            return 'undefined';
+        }else if(typeof obj!=='string'){
+            //todo
+        }
+
+        return obj;
+    }
+
     // shadow & deep
     function copy(){
         // todo
