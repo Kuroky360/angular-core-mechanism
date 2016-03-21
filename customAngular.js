@@ -552,7 +552,7 @@
             instanceCache={},
             protoInstanceInjector=createInternalInjector(instanceCache,function(serviceName,caller){
                 var provider = providerInjector.get(serviceName+providerSufix,caller);
-                instanceCache.invoke(provider.$get,provider,undefined,serviceName);
+                return instanceCache.invoke(provider.$get,provider,undefined,serviceName);
             }),
             instanceInjector=protoInstanceInjector;
         providerCache['$injector'+providerSufix]={$get:valueFn(protoInstanceInjector)};
