@@ -612,7 +612,7 @@
                 provider_ = providerInjector.instantiate(provider_);
             }
             if(!provider_.$get){
-                throw new Error('do not have $get method!');
+                throw $injectorMinErr('pget','Provider {0} must define $get factory method.',name);
             }
             return  providerCache[name+providerSufix]=provider_;
         }
@@ -782,6 +782,7 @@
 
     //q factory fn
     function qFactory(nextTick,exceptionHandler){
+        var $qMinErr=minErr('$q',TypeError);
 
         function Promise(){
             this.$$state={status:0};
@@ -842,7 +843,7 @@
             resolve:function(val){
                 if(this.promise.$$state.status) return;
                 if(this.promise===val){
-                    throw new Error('should be resolved with value other than itself.');
+                    this.$$reject($qMinErr('qcycle',"Expected promise should be resolved with value other than itsel '{0}'"));
                 }else {
                     this.$$resolve(val);
                 }
