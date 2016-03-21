@@ -939,7 +939,7 @@
 
         var $Q=function Q(resolver){
             if(!isFunciton(resolver)){
-                throw new Error('expected resolverFn');
+                throw $qMinErr('norslvr',"Expected resolverFn, got '{0}'",resolver);
             }
             var deferred=new Deferred();
             function resolveFn(value){
