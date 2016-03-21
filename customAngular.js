@@ -653,7 +653,8 @@
             function getService(serviceName,caller){
                 if(cache.hasOwnProperty(serviceName)){
                     if(cache[serviceName]===INSTANTING){
-                        throw new Error('重复循环依赖！');
+                        throw $injectorMinErr('cdep','Circular dependency found: {0}',
+                        serviceName+' <- '+path.join(' <- '));
                     }
                     return cache[serviceName];
                 }else{
