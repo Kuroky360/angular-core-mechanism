@@ -658,9 +658,19 @@
                     }
                     return cache[serviceName];
                 }else{
-                    cache[serviceName]=INSTANTING;
-                    //path.push(serviceName);
-                    return  cache[serviceName]=factory(serviceName,caller);
+                    try {
+                        cache[serviceName]=INSTANTING;
+                        path.unshift(serviceName);
+                        return  cache[serviceName]=factory(serviceName,caller);
+                    }catch(err){
+                        if(cache[serviceName]===INSTANTING){
+                            delete cache[serviceName];
+                        }
+                        throw err;
+                    }finally{
+                        path.shift();
+                    }
+
                 }
             }
 
