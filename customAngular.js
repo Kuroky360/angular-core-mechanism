@@ -521,6 +521,12 @@
         }]);
 
         instanceInjector = createInjector(modules,config.strictDi);
+        instanceInjector.invoke(['$rootScope','$rootElement','$compile','$injector',
+            function(scope,element,compile,injector){
+            scope.$apply(function () {
+               compile(element)(scope)
+            });
+        }])
     }
 
     // annotate fn
