@@ -1145,10 +1145,21 @@
     function $$SanitizeUriProvider(){
         // todo
     }
+
+    function bindJQuery(){
+        // todo
+    }
+
+    function angularInit(element,bootstrap){
+        // todo
+    }
     //first check jquery
-
+    bindJQuery();
     //publish angular
-
+    publishExternalAPI(angular);
     //bootstrap when dom ready
+    jqLite(document).ready(function(){
+        angularInit(document,bootstrap);
+    })
 
 }(window,document);
