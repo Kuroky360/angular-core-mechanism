@@ -488,7 +488,8 @@
                         controller:invokeLaterAndSetModuleName('$controllerProvider','register'),
                         filter:invokeLaterAndSetModuleName('$filterProvider','register'),
                         directive:invokeLaterAndSetModuleName('$compileProvider','directive'),
-                        component:invokeLaterAndSetModuleName('$compileProvider','register')
+                        component:invokeLaterAndSetModuleName('$compileProvider','register'),
+                        decorator:invokeLaterAndSetModuleName('$provide','decorator')
                     };
                     if(configFn){
                         config(configFn);
@@ -554,7 +555,8 @@
                     provider:supportObject(provider),
                     factory:supportObject(factory),
                     service:supportObject(service),
-                    value:supportObject(value)
+                    value:supportObject(value),
+                    decorator:supportObject(decorator)
                 }
             },
             providerInjector=(providerCache.$injector=createInternalInjector(providerCache,function(seviceName,caller){
@@ -657,6 +659,14 @@
             return factory(name,valueFn(value),false);
         }
 
+        function decorator(serviceName,decorFn){
+            var provider=providerInjector.get(serviceName+providerSufix),
+                originalGet=provider.$get;
+            provider.$get=function(){
+                var instance=instanceInjector.invoke(originalGet,provider);
+                return instanceInjector.invoke(decorFn,null,{$delegate:instance});
+            };
+        }
 
         ////////////////////////////////////
         // internal injector
