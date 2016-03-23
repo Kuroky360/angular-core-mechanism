@@ -447,11 +447,14 @@
     // module loader setup
     function setupModuleLoader(window) {
 
+        var $injectorMinErr=minErr('$injector');
+        var ngMinErr=minErr('ng');
+        var angular = ensure(window, angular, Object);
+        angular.$$minErr=angular.$$minErr||minErr;
+
         function ensure(obj, child, factory) {
             return obj[child] || (obj[child] = factory());
         }
-
-        var angular = ensure(window, angular, Object);
 
         return ensure(angular, 'module', function () {
             var modules = {};
@@ -461,6 +464,11 @@
                     modules[name] = null;
                 }
                 return ensure(modules, name, function () {
+                    if(!requires){
+                        throw $injectorMinErr('nomod',"Module '{0}' is not available! You either misspelled " +
+                            "the module name or forgot to load it. If registering a module ensure that you " +
+                            "specify the dependencies as the second argument.",name);
+                    }
                     var invokeQueue=[];
                     var configBlocks=[];
                     var runBlocks=[];
