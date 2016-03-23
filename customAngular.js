@@ -556,7 +556,7 @@
                     factory:supportObject(factory),
                     service:supportObject(service),
                     value:supportObject(value),
-                    decorator:supportObject(decorator)
+                    decorator:decorator
                 }
             },
             providerInjector=(providerCache.$injector=createInternalInjector(providerCache,function(seviceName,caller){
