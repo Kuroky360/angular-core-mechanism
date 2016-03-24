@@ -533,7 +533,8 @@
         instanceInjector.invoke(['$rootScope','$rootElement','$compile','$injector',
             function(scope,element,compile,injector){
             scope.$apply(function () {
-               compile(element)(scope)
+                element.data('$injecotr',injector);
+                compile(element)(scope)
             });
         }])
     }
