@@ -786,7 +786,8 @@
                 $xhrFactory:$xhrFactoryProvider,
                 $exceptionHandler:$ExceptionHandlerProvider,
                 $httpBackend:$HttpBackendProvider,
-                $snifferProvider:$SnifferProvider
+                $snifferProvider:$SnifferProvider,
+                $location:$LocationProvider
             });//lots of providers
         }]);
     }
