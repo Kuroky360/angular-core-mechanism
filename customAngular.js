@@ -801,6 +801,11 @@
         // todo
     }
 
+    function $LocationProvider(){
+        // todo
+    }
+
+
     //Browser constructor
     function Browser(window,document,$log,$sniffer){
         // todo
