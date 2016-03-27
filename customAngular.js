@@ -787,7 +787,8 @@
                 $exceptionHandler:$ExceptionHandlerProvider,
                 $httpBackend:$HttpBackendProvider,
                 $snifferProvider:$SnifferProvider,
-                $location:$LocationProvider
+                $location:$LocationProvider,
+                $$hashMap:$$HashMapProvider
             });//lots of providers
         }]);
     }
