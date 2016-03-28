@@ -1088,7 +1088,29 @@
         };
 
         this.$get=['$window', function ($window) {
-            // todo
+
+            return {
+                log:consoleLog('log'),
+                info:consoleLog('info'),
+                warn:consoleLog('warn'),
+                error:consoleLog('error'),
+                debug:(function(){
+                    var fn=consoleLog('debug');
+                    return function(){
+                        if(debug){
+                            fn.apply(self,arguments);
+                        }
+                    };
+                }())
+            };
+
+            function formatError(arg){
+
+            }
+
+            function consoleLog(type){
+                
+            }
         }];
 
 
