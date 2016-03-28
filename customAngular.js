@@ -217,6 +217,7 @@
     ////////////////////////////////////
     function isFunciton(value){return typeof value ==='function';}
 
+    noop.$inject=[];
     function noop(){}
 
     function isUndefined(value){return typeof value ==='undefined';}
@@ -1109,7 +1110,10 @@
             }
 
             function consoleLog(type){
-                
+                var console=$window.log||{},
+                    logFn=console[type]||console.log||noop,
+                    hasApply=false;
+                // todo
             }
         }];
 
