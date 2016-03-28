@@ -806,6 +806,9 @@
         // todo
     }
 
+    function $$HashMapProvider(){
+        // todo
+    }
 
     //Browser constructor
     function Browser(window,document,$log,$sniffer){
