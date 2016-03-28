@@ -1106,14 +1106,35 @@
             };
 
             function formatError(arg){
-
+                if(arg instanceof Error){
+                    // todo
+                }
+                return arg;
             }
 
             function consoleLog(type){
-                var console=$window.log||{},
+                var console=$window.console||{},
                     logFn=console[type]||console.log||noop,
                     hasApply=false;
-                // todo
+
+                try{
+                    // for IE
+                    hasApply=!!logFn.apply;
+                }catch(e){}
+
+                if(hasApply){
+                    return function(){
+                        var args=[];
+                        forEach(arguments,function(arg){
+                            args.push(formatError(arg));
+                        });
+                        return logFn.apply(console,args);
+                    };
+                }
+                // for IE
+                return function(arg1,arg2){
+                    logFn(arg1,arg2==null?'':arg2);
+                };
             }
         }];
 
