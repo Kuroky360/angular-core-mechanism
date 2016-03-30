@@ -806,6 +806,7 @@
                 $q: $QProvider,
                 $$q: $$QProvider,
                 $log: $LogProvider,
+                $cacheFactory:$CacheFactoryProvider,
                 $rootScope: $RootScopeProvider,
                 $document: $DocumentProvider,
                 $parse: $ParseProvider,
@@ -834,6 +835,10 @@
     }
 
     function $SnifferProvider() {
+        // todo
+    }
+
+    function $CacheFactoryProvider(){
         // todo
     }
 
