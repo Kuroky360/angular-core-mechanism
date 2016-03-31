@@ -822,7 +822,8 @@
                 $httpBackend: $HttpBackendProvider,
                 $snifferProvider: $SnifferProvider,
                 $location: $LocationProvider,
-                $$hashMap: $$HashMapProvider
+                $$hashMap: $$HashMapProvider,
+                $$cookieReader:$$CookieReaderProvider
             });//lots of providers
         }]);
     }
