@@ -835,6 +835,10 @@
         };
     }
 
+    function $$CookieReaderProvider(){
+        //todo
+    }
+
     function $SnifferProvider() {
         // todo
     }
