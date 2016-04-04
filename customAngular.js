@@ -822,7 +822,8 @@
                 $snifferProvider: $SnifferProvider,
                 $location: $LocationProvider,
                 $$hashMap: $$HashMapProvider,
-                $$cookieReader:$$CookieReaderProvider
+                $$cookieReader:$$CookieReaderProvider,
+                $$testability:$$TestabilityProvider
             });//lots of providers
         }]);
     }
@@ -832,6 +833,10 @@
     function $CompileProvider($provide, $$sanitizeUriProvider) {
         this.directive = function () {
         };
+    }
+
+    function $$TestabilityProvider(){
+        // todo
     }
 
     function $$CookieReaderProvider(){
