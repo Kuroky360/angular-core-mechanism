@@ -823,7 +823,8 @@
                 $location: $LocationProvider,
                 $$hashMap: $$HashMapProvider,
                 $$cookieReader:$$CookieReaderProvider,
-                $$testability:$$TestabilityProvider
+                $$testability:$$TestabilityProvider,
+                $httpParamSerializer:$HttpParamSerializerProvider
             });//lots of providers
         }]);
     }
