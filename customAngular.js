@@ -836,6 +836,10 @@
         };
     }
 
+    function $HttpParamSerializerProvider(){
+        //todo
+    }
+
     function $$TestabilityProvider(){
         // todo
     }
