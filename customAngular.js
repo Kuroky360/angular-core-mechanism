@@ -824,7 +824,8 @@
                 $$hashMap: $$HashMapProvider,
                 $$cookieReader:$$CookieReaderProvider,
                 $$testability:$$TestabilityProvider,
-                $httpParamSerializer:$HttpParamSerializerProvider
+                $httpParamSerializer:$HttpParamSerializerProvider,
+                $animate:$AnimateProvider
             });//lots of providers
         }]);
     }
@@ -834,6 +835,10 @@
     function $CompileProvider($provide, $$sanitizeUriProvider) {
         this.directive = function () {
         };
+    }
+
+    function $AnimateProvider(){
+        // todo
     }
 
     function $HttpParamSerializerProvider(){
