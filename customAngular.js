@@ -746,6 +746,11 @@
                 return args;
             }
 
+            function isClass(func){
+                if(msie<=11) return false;
+                return isFunciton(func)&&/^(?:class\s|constructor\()/.test(toString.call(func));
+            }
+
             //invoke fn
             function invoke(fn, self, locals, serviceName) {
                 var length,
