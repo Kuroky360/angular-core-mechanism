@@ -569,9 +569,28 @@
     }
 
     // annotate fn
-    function annotate(fn) {
-        var $injectArray = [];
-        return $injectArray;
+    function annotate(fn,strictDi,name) {
+        var $inject,
+            last;
+        if(isFunciton(fn)){
+            if(!($inject=fn.$inject)){
+                $inject=[];
+                if(fn.length){
+                    if(strictDi){
+                        throw $injectorMinErr('strictdi',
+                        '{0} is not using explicit annotation and cannot be invoked in strict mode',name);
+                    }
+                    //todo
+                }
+                fn.$inject=$inject;
+            }
+        }else if(isArray(fn)){
+
+        }else{
+
+        }
+
+        return $inject;
     }
 
     //injector creator
