@@ -766,6 +766,8 @@
         }
     }
 
+    createInjector.$$annotate=annotate;
+
     // expose angular
     function publishExternalAPI(angular) {
         shallowExtend(angular, {
