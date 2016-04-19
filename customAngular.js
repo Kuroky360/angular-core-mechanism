@@ -773,17 +773,19 @@
             }
 
             // intantiate instace
-            function instantiate(type, locals, serviceName) {
-                var instance = Object.create((isArray(type) ? type[type.length - 1] : type).prototype || null);
-                var returnValue = invoke(type, instance, locals, serviceName);
+            function instantiate(Type, locals, serviceName) {
 
-                return isObject(returnValue) || isFunciton(returnValue) ? returnValue : instance;
+                var ctor=isArray(Type)?Type[Type.length-1]:Type;
+                var args=injectionArgs(Type,locals,serviceName);
+                args.unshift(null);
+                return new (Function.prototype.bind.apply(ctor,args))();
             }
 
             return {
                 instantiate: instantiate,
                 invoke: invoke,
-                get: getService
+                get: getService,
+                annotate:createInjector.$$annotate
             };
         }
     }
