@@ -753,21 +753,23 @@
 
             //invoke fn
             function invoke(fn, self, locals, serviceName) {
-                var length,
-                    args = [],
-                    i,
-                    item,
-                    annotateArray = annotate(fn);
-                for (i = 0, length = annotateArray.length; i < length; i++) {
-                    item = annotateArray[i];
-                    args.push(locals && locals.hasOwnProperty(item) ? locals[item] : getService(item, serviceName));
+                if(isString(locals)){
+                    serviceName=locals;
+                    locals=null;
                 }
+
+                var args=injectionArgs(fn,locals,serviceName);
 
                 if (isArray(fn)) {
                     fn = fn[fn.length - 1];
                 }
 
-                return fn.call(self, args);
+                if(!isClass(fn)){
+                    return  fn.apply(self,args);
+                }else{
+                    args.unshift(null);
+                    return new (Function.prototype.bind.apply(fn,args))();
+                }
             }
 
             // intantiate instace
