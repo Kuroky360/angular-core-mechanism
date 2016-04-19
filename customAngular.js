@@ -602,7 +602,7 @@
             }),
             instanceInjector = protoInstanceInjector;
         providerCache['$injector' + providerSufix] = {$get: valueFn(protoInstanceInjector)};
-        var runBlocks = loadMoules(modulesToLoad);
+        var runBlocks = loadModules(modulesToLoad);
         instanceInjector = protoInstanceInjector.get('$injector');
         instanceInjector.strictDi = strictDi;
         //forEach load modules
@@ -615,7 +615,7 @@
         ////////////////////////////////////
         // Module Loading
         ////////////////////////////////////
-        function loadMoules(modules) {
+        function loadModules(modules) {
             var runBlocks = [], moduleFn;
             forEach(modules, function (module) {
                 function runInvokeQueue(queue) {
@@ -629,7 +629,7 @@
 
                 if (isString(module)) {
                     moduleFn = angularModule(module);// get module
-                    runBlocks.concat(loadMoules(moduleFn.requires)).concat(moduleFn._runBlocks);
+                    runBlocks.concat(loadModules(moduleFn.requires)).concat(moduleFn._runBlocks);
                     runInvokeQueue(moduleFn._invokeQueue);
                     runInvokeQueue(moduleFn._configBlocks)
                 } else if (isArray(module)) {
