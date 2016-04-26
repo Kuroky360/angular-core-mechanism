@@ -569,9 +569,28 @@
     }
 
     // annotate fn
-    function annotate(fn) {
-        var $injectArray = [];
-        return $injectArray;
+    function annotate(fn,strictDi,name) {
+        var $inject,
+            last;
+        if(isFunciton(fn)){
+            if(!($inject=fn.$inject)){
+                $inject=[];
+                if(fn.length){
+                    if(strictDi){
+                        throw $injectorMinErr('strictdi',
+                        '{0} is not using explicit annotation and cannot be invoked in strict mode',name);
+                    }
+                    //todo
+                }
+                fn.$inject=$inject;
+            }
+        }else if(isArray(fn)){
+
+        }else{
+
+        }
+
+        return $inject;
     }
 
     //injector creator
@@ -602,7 +621,7 @@
             }),
             instanceInjector = protoInstanceInjector;
         providerCache['$injector' + providerSufix] = {$get: valueFn(protoInstanceInjector)};
-        var runBlocks = loadMoules(modulesToLoad);
+        var runBlocks = loadModules(modulesToLoad);
         instanceInjector = protoInstanceInjector.get('$injector');
         instanceInjector.strictDi = strictDi;
         //forEach load modules
@@ -615,7 +634,7 @@
         ////////////////////////////////////
         // Module Loading
         ////////////////////////////////////
-        function loadMoules(modules) {
+        function loadModules(modules) {
             var runBlocks = [], moduleFn;
             forEach(modules, function (module) {
                 function runInvokeQueue(queue) {
@@ -629,7 +648,7 @@
 
                 if (isString(module)) {
                     moduleFn = angularModule(module);// get module
-                    runBlocks.concat(loadMoules(moduleFn.requires)).concat(moduleFn._runBlocks);
+                    runBlocks.concat(loadModules(moduleFn.requires)).concat(moduleFn._runBlocks);
                     runInvokeQueue(moduleFn._invokeQueue);
                     runInvokeQueue(moduleFn._configBlocks)
                 } else if (isArray(module)) {
@@ -731,40 +750,66 @@
                 }
             }
 
+            function injectionArgs(fn,locals,serviceName){
+                var args=[],
+                    $inject=createInjector.$$annotate(fn,strictDi,serviceName);
+
+                for(var i= 0,length=$inject.length;i<length;i++){
+                    var key=$inject[i];
+                    if(!isString(key)){
+                        throw $injectorMinErr('itkn',
+                            'Incorrect injection token! Expected service name as string, got {0}',key);
+                    }
+                    args.push(locals&&locals.hasOwnProperty(key)?locals[key]:getService(key,serviceName));
+                }
+                return args;
+            }
+
+            function isClass(func){
+                if(msie<=11) return false;
+                return isFunciton(func)&&/^(?:class\s|constructor\()/.test(toString.call(func));
+            }
+
             //invoke fn
             function invoke(fn, self, locals, serviceName) {
-                var length,
-                    args = [],
-                    i,
-                    item,
-                    annotateArray = annotate(fn);
-                for (i = 0, length = annotateArray.length; i < length; i++) {
-                    item = annotateArray[i];
-                    args.push(locals && locals.hasOwnProperty(item) ? locals[item] : getService(item, serviceName));
+                if(isString(locals)){
+                    serviceName=locals;
+                    locals=null;
                 }
+
+                var args=injectionArgs(fn,locals,serviceName);
 
                 if (isArray(fn)) {
                     fn = fn[fn.length - 1];
                 }
 
-                return fn.call(self, args);
+                if(!isClass(fn)){
+                    return  fn.apply(self,args);
+                }else{
+                    args.unshift(null);
+                    return new (Function.prototype.bind.apply(fn,args))();
+                }
             }
 
             // intantiate instace
-            function instantiate(type, locals, serviceName) {
-                var instance = Object.create((isArray(type) ? type[type.length - 1] : type).prototype || null);
-                var returnValue = invoke(type, instance, locals, serviceName);
+            function instantiate(Type, locals, serviceName) {
 
-                return isObject(returnValue) || isFunciton(returnValue) ? returnValue : instance;
+                var ctor=isArray(Type)?Type[Type.length-1]:Type;
+                var args=injectionArgs(Type,locals,serviceName);
+                args.unshift(null);
+                return new (Function.prototype.bind.apply(ctor,args))();
             }
 
             return {
                 instantiate: instantiate,
                 invoke: invoke,
-                get: getService
+                get: getService,
+                annotate:createInjector.$$annotate
             };
         }
     }
+
+    createInjector.$$annotate=annotate;
 
     // expose angular
     function publishExternalAPI(angular) {
@@ -823,7 +868,9 @@
                 $location: $LocationProvider,
                 $$hashMap: $$HashMapProvider,
                 $$cookieReader:$$CookieReaderProvider,
-                $$testability:$$TestabilityProvider
+                $$testability:$$TestabilityProvider,
+                $httpParamSerializer:$HttpParamSerializerProvider,
+                $animate:$AnimateProvider
             });//lots of providers
         }]);
     }
@@ -833,6 +880,14 @@
     function $CompileProvider($provide, $$sanitizeUriProvider) {
         this.directive = function () {
         };
+    }
+
+    function $AnimateProvider(){
+        // todo
+    }
+
+    function $HttpParamSerializerProvider(){
+        //todo
     }
 
     function $$TestabilityProvider(){
