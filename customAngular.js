@@ -878,7 +878,16 @@
     //compileProvider
     $CompileProvider.$inject = ['$provide', '$$sanitizeUriProvider'];
     function $CompileProvider($provide, $$sanitizeUriProvider) {
-        this.directive = function () {
+        var hasDirectives = {},
+            Suffix = 'Directive';
+        this.directive = function registerDirective(name,directiveFactory) {
+            if(isString(name)){
+                
+            }else{// object
+                forEach(name,reverseParams(registerDirective));
+            }
+
+            return this;
         };
     }
 
