@@ -890,7 +890,7 @@
                             try{
                                 var directive=$injector.invoke(directiveFactory);
                                 if(isFunciton(directive)){
-
+                                    directive={compile:valueFn(directive)};
                                 }else if(!directive.compile&&directive.link){
                                     directive.compile=valueFn(directive.link);
                                 }
