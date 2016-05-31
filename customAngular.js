@@ -882,11 +882,36 @@
             Suffix = 'Directive';
         this.directive = function registerDirective(name,directiveFactory) {
             if(isString(name)){
-                
+                if(!hasDirectives.hasOwnProperty(name)){
+                    hasDirectives[name]=[];
+                    $provide.factory(name+Suffix,['$injector','$exceptionHandler',function($injector,$exceptionHandler){
+                        var directives=[];
+                        forEach(hasDirectives[name],function(directiveFactory,index){
+                            try{
+                                var directive=$injector.invoke(directiveFactory);
+                                if(isFunciton(directive)){
+
+                                }else if(!directive.compile&&directive.link){
+                                    directive.compile=valueFn(directive.link);
+                                }
+                                directive.name=directive.name||name;
+                                directive.priority=directive.priority||0;
+                                directive.index=index;
+                                directive.restrict=directive.restrict||'EA';
+                                directive.require=directive.require||(directive.controller&&directive.name);
+                                directive.$$moduleName=directiveFactory.$$moduleName;
+                            }catch(e){
+                                $exceptionHandler(e);
+                            }
+                            directives.push(directive);
+                        });
+                        return directives;
+                    }]);
+                }
+                hasDirectives[name].push(directiveFactory);
             }else{// object
                 forEach(name,reverseParams(registerDirective));
             }
-
             return this;
         };
     }
