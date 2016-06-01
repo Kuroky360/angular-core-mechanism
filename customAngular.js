@@ -1005,7 +1005,9 @@
     }
 
     function $$HashMapProvider() {
-        // todo
+        this.$get=[function(){
+           return HashMap;
+        }];
     }
 
     //Browser constructor
