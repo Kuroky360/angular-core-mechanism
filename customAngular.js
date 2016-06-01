@@ -610,6 +610,26 @@
 
         return $inject;
     }
+    
+    function hashKey(obj,nextUidFn){
+        var key=obj&&obj.$$hashKey;
+        
+        if(key){
+            if(isFunciton(key)){
+                key=obj.$$hashKey();
+            }
+            return key;
+        }
+        
+        var objType=typeof obj;
+        if(objType==='function'||(obj!==null&&objType==='object')){
+            key=obj.$$hashKey=objType+':'+(nextUidFn||nextUid)();
+        }else{
+            key=objType+':'+obj;
+        }
+        
+        return key;
+    }
 
     //injector creator
     function createInjector(modulesToLoad, strictDi) {
