@@ -631,6 +631,28 @@
         return key;
     }
 
+    function HashMap(array,isolatedUid){
+        if(isolatedUid){
+            var uid=0;
+            this.nextUid=function(){
+                return ++uid;
+            };
+        }
+        forEach(array,this.put,this);
+    }
+    HashMap.prototype={
+        put:function(key,value){
+            this[hashKey(key,this.nextUid)]=value;
+        },
+        get:function(key){
+            return this[hashKey(key,this.nextUid)];  
+        },
+        remove:function(key){
+            var value=this[key=hashKey(key,this.nextUid)];
+            delete this[key];
+            return value;
+        }
+    };
     //injector creator
     function createInjector(modulesToLoad, strictDi) {
         strictDi = (strictDi === true);
