@@ -610,7 +610,49 @@
 
         return $inject;
     }
+    
+    function hashKey(obj,nextUidFn){
+        var key=obj&&obj.$$hashKey;
+        
+        if(key){
+            if(isFunciton(key)){
+                key=obj.$$hashKey();
+            }
+            return key;
+        }
+        
+        var objType=typeof obj;
+        if(objType==='function'||(obj!==null&&objType==='object')){
+            key=obj.$$hashKey=objType+':'+(nextUidFn||nextUid)();
+        }else{
+            key=objType+':'+obj;
+        }
+        
+        return key;
+    }
 
+    function HashMap(array,isolatedUid){
+        if(isolatedUid){
+            var uid=0;
+            this.nextUid=function(){
+                return ++uid;
+            };
+        }
+        forEach(array,this.put,this);
+    }
+    HashMap.prototype={
+        put:function(key,value){
+            this[hashKey(key,this.nextUid)]=value;
+        },
+        get:function(key){
+            return this[hashKey(key,this.nextUid)];  
+        },
+        remove:function(key){
+            var value=this[key=hashKey(key,this.nextUid)];
+            delete this[key];
+            return value;
+        }
+    };
     //injector creator
     function createInjector(modulesToLoad, strictDi) {
         strictDi = (strictDi === true);
@@ -963,7 +1005,9 @@
     }
 
     function $$HashMapProvider() {
-        // todo
+        this.$get=[function(){
+           return HashMap;
+        }];
     }
 
     //Browser constructor
@@ -1377,11 +1421,6 @@
     bindJQuery();
     //publish angular
     publishExternalAPI(angular);
-    // create ngLocale module
-    angular.module("ngLocale", [], ["$provide", function($provide) {
-        // todo execute when loading modules
-    }]);
-
     //bootstrap when dom ready
     jqLite(document).ready(function () {
         angularInit(document, bootstrap);
