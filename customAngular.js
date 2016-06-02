@@ -1421,6 +1421,11 @@
     bindJQuery();
     //publish angular
     publishExternalAPI(angular);
+
+    //create ngLocale module
+    angular.module('ngLocale',[],['$provide',function($provide){
+        // todo
+    }]);
     //bootstrap when dom ready
     jqLite(document).ready(function () {
         angularInit(document, bootstrap);
