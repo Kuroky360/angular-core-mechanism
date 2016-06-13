@@ -1372,6 +1372,19 @@
 
         this.$get=['$parse','$exceptionHandler','$browser',function($parse,$exceptionHandler,$browser){
             //todo
+            function Scope(){
+                this.$$id=nextUid();
+                this.root=this;
+                this.destroyed=false;
+                this.$$parent=this.$$watchers=this.$$nextSibling=this.$$prevSibling=this.$$childHead=this.$$childTail=null;
+                this.$$watchersCount=0;
+                this.$$listeners={};
+                this.$$listenersCount={};
+                this.$$isolateBindings=null;
+            }
+
+            var $rootScope=new Scope();
+            return $rootScope;
         }];
     }
 
