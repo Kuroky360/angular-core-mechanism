@@ -1347,7 +1347,32 @@
     }
 
     function $RootScopeProvider() {
-        // todo
+        var TTL=10,
+            $rootScopeMinErr=minErr('$rootScope'),
+            lastDirtyWatch=null,
+            applyAsyncId=null;
+
+        this.digestTtl=function(value){
+            if(arguments.length) TTL=value;
+            return TTL;
+        };
+
+        function createChildScopeClass(parent){
+            function ChildScope(){
+                this.$$id=nextUid();
+                this.$$watchers=this.$$nextSibling=this.$$childHead=this.$$childTail=null;
+                this.$$watchersCount=0;
+                this.$$listeners={};
+                this.$$listenersCount={};
+                this.$$ChildScope=null;
+            }
+            ChildScope.prototype=parent;
+            return ChildScope;
+        }
+
+        this.$get=['$parse','$exceptionHandler','$browser',function($parse,$exceptionHandler,$browser){
+            //todo
+        }];
     }
 
     // documentProvider
