@@ -1376,7 +1376,7 @@
                 this.$$id=nextUid();
                 this.root=this;
                 this.destroyed=false;
-                this.$$parent=this.$$watchers=this.$$nextSibling=this.$$prevSibling=this.$$childHead=this.$$childTail=null;
+                this.$$phase=this.$$parent=this.$$watchers=this.$$nextSibling=this.$$prevSibling=this.$$childHead=this.$$childTail=null;
                 this.$$watchersCount=0;
                 this.$$listeners={};
                 this.$$listenersCount={};
@@ -1384,7 +1384,26 @@
             }
 
             var $rootScope=new Scope();
+
             return $rootScope;
+
+            function beginPhase(phase){
+                if($rootScope.$$phase){
+                    throw $rootScopeMinErr('inprog','{0} already in progress',$rootScope.$$phase);
+                }
+
+                $rootScope.$$phase=phase;
+            }
+
+            function clearPhase(){
+                $rootScope.$$phase=null;
+            }
+
+            function incrementWatchersCount(current,count){
+                do{
+                    current.$$watchersCount+=count;
+                }while((current=current.$parent));
+            }
         }];
     }
 
