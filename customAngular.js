@@ -1404,6 +1404,14 @@
                     current.$$watchersCount+=count;
                 }while((current=current.$parent));
             }
+            function decrementListenerCount(current,count,name){
+                do{
+                    current.$$listenersCount[name]-=count;
+                    if(current.$$listenersCount[name]===0){
+                        delete current.$$listenersCount[name];
+                    }
+                }while((current=current.$$parent));
+            }
         }];
     }
 
