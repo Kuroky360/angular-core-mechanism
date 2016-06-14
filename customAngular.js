@@ -1384,6 +1384,9 @@
             }
 
             var $rootScope=new Scope();
+            var asyncQueue=$rootScope.$$asyncQueue=[];
+            var postDigestQueue=$rootScope.$$postDigestQueue=[];
+            var applyAsyncQueue=$rootScope.$$applyAsyncQueue=[];
 
             return $rootScope;
 
