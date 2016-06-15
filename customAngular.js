@@ -1372,6 +1372,10 @@
 
         this.$get=['$parse','$exceptionHandler','$browser',function($parse,$exceptionHandler,$browser){
             //todo
+            function destroyChildScope($event){
+                $event.currentScope.$$destroyed=true;
+            }
+
             function Scope(){
                 this.$$id=nextUid();
                 this.root=this;
