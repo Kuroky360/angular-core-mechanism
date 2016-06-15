@@ -1415,6 +1415,19 @@
                     }
                 }while((current=current.$$parent));
             }
+
+            function initWatchVal(){}
+
+            function flushApplyAsync(){
+                while(applyAsyncQueue.length){
+                    try{
+                        applyAsyncQueue.shift()();
+                    }catch(e){
+                        $exceptionHandler(e);
+                    }
+                }
+                applyAsyncId=null;
+            }
         }];
     }
 
