@@ -1376,6 +1376,10 @@
                 $event.currentScope.$$destroyed=true;
             }
 
+            function cleanUpScope($scope){
+                $scope.$parent=$scope.$$nextSibling=$scope.$$prevSibling=$scope.$$childTail=$scope.$$childHead=$scope.$root=$scope.$$watchers=null;
+            }
+
             function Scope(){
                 this.$$id=nextUid();
                 this.root=this;
