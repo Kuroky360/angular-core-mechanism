@@ -1026,7 +1026,21 @@
 
     //Browser constructor
     function Browser(window, document, $log, $sniffer) {
-        // todo
+        var self=this,
+            rawDocument=document[0],
+            location=window.location,
+            history=window.history,
+            setTimeout=window.setTimeout,
+            clearTimeout=window.clearTimeout,
+            pendingDeferIds=[];
+
+        self.defer=function(fn,delay){
+            //todo
+        };
+
+        self.defer.cancel=function(deferId){
+            //todo
+        }
     }
 
     //q factory fn
