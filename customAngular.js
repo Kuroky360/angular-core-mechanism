@@ -1348,6 +1348,16 @@
 
     var ngAttrPrefixes = ['ng-','data-ng-','ng:','x-ng-'];
 
+    function getNgAttribute(element,ngAttr){
+        for(var attr,i=0,ii=ngAttrPrefixes.length;i<ii;i++){
+            attr=ngAttrPrefixes[i]+ngAttr;
+            if(isString(attr=element.getAttribute(attr))){
+                return attr;
+            }
+        }
+        return null;
+    }
+
     function $RootScopeProvider() {
         var TTL=10,
             $rootScopeMinErr=minErr('$rootScope'),
@@ -1514,7 +1524,30 @@
     }
 
     function angularInit(element, bootstrap) {
-        // todo
+        var appElement,
+            config={},
+            module;
+
+        forEach(ngAttrPrefixes,function(prefix){
+            var name =prefix+'app';
+            if(!appElement&&element.hasAttribute&&element.hasAttribute(name)){
+                appElement=element;
+                module=element.getAttribute(name);
+            }
+        });
+
+        forEach(ngAttrPrefixes,function(prefix){
+            var name=prefix+'app';
+            var candidate;
+            if(!appElement&&(candidate=element.querySelector('['+name.replace(':','\\:')+']'))&&element.hasAttribute(name)){
+                appElement=candidate;
+                module=candidate.getAttribute(name);
+            }
+        });
+        if(appElement){
+            config.strictDi=getNgAttribute(appElement,'strict-di')!==null;
+            bootstrap(appElement,module?[module]:[],config)
+        }
     }
 
     //first check jquery
