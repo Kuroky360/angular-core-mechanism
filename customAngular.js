@@ -1346,6 +1346,8 @@
         }];
     }
 
+    var ngAttrPrefixes = ['ng-','data-ng-','ng:','x-ng-'];
+
     function $RootScopeProvider() {
         var TTL=10,
             $rootScopeMinErr=minErr('$rootScope'),
