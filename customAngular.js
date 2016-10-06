@@ -974,6 +974,20 @@
             }
             return this;
         };
+        this.$get=['$injector','$interpolate','$exceptionHandler','$templateRequest','$parse',
+            '$controller','$rootScope','$sce','$animate','$$sanitizeUri',
+            function($injector,$interpolate,$exceptionHandler,$templateRequest,$parse,
+            $controller,$rootScope,$sce,$animate,$$sanitizeUri){
+
+            return compile;
+
+            function compile($compileNodes){
+
+                return function publicLinkFn(){
+
+                };
+            }
+        }];
     }
 
     function $AnimateProvider(){
