@@ -977,63 +977,85 @@
         this.$get=['$injector','$interpolate','$exceptionHandler','$templateRequest','$parse',
             '$controller','$rootScope','$sce','$animate','$$sanitizeUri',
             function($injector,$interpolate,$exceptionHandler,$templateRequest,$parse,
-            $controller,$rootScope,$sce,$animate,$$sanitizeUri){
+            $controller,$rootScope,$sce,$animate,$$sanitizeUri) {
 
-            var Attributes=function(){};
-            Attributes.prototype={};
-
-            function safeAddClass($element,className){
-                try{
-                    $element.addClass(className);
-                }catch (e){
-                    //ignore
-                }
-            }
-            var startSymbol =$interpolate.startSymbol(),
-                endSymbol=$interpolate.endSymbol();
-
-            compile.$$addBindingInfo=debugInfoEnabled?function $$addBindingInfo(){
-                //todo
-            }:noop;
-
-            compile.$$addBindingClass=debugInfoEnabled?function $$addBindingClass($element){
-                safeAddClass($element,'ng-binding');
-            }:noop;
-
-            compile.$$addScopeInfo=debugInfoEnabled?function $$addScopeInfo($element,scope){
-              
-            }:noop;
-            
-            compile.$$addScopeClass=debugInfoEnabled?function $$addScopeClass($element,isolated){
-              safeAddClass($element,isolated?'ng-isolate-scope':'ng-scope'); 
-            }:noop;
-
-            return compile;
-
-            function compile($compileNodes,transcludeFn,maxPriority,ignoreDirective,previousCompileContext){
-                if(!($compileNodes instanceof jqLite)){
-                  $compileNodes=jqlite($compileNodes);
-                }
-
-                var NOT_EMPTY=/\S+/;
-                
-                var compositeLinkFn = compileNodes($compileNodes,transcludeFn,$compileNodes,maxPriority,ignoreDirective,previousCompileContext);
-                compile.$$addScopeClass($compileNodes);
-                return function publicLinkFn(){
-
+                var Attributes = function () {
                 };
-            }
-            
-            function compileNodes(nodeList,transcludeFn,$rootElement,maxPriority,ignoreDirective,previousCompileContext){
-              //todo
-            }
-        }];
-    }
+                Attributes.prototype = {};
 
+                function safeAddClass($element, className) {
+                    try {
+                        $element.addClass(className);
+                    } catch (e) {
+                        //ignore
+                    }
+                }
+
+                var startSymbol = $interpolate.startSymbol(),
+                    endSymbol = $interpolate.endSymbol();
+
+                compile.$$addBindingInfo = debugInfoEnabled ? function $$addBindingInfo() {
+                    //todo
+                } : noop;
+
+                compile.$$addBindingClass = debugInfoEnabled ? function $$addBindingClass($element) {
+                    safeAddClass($element, 'ng-binding');
+                } : noop;
+
+                compile.$$addScopeInfo = debugInfoEnabled ? function $$addScopeInfo($element, scope) {
+
+                } : noop;
+
+                compile.$$addScopeClass = debugInfoEnabled ? function $$addScopeClass($element, isolated) {
+                    safeAddClass($element, isolated ? 'ng-isolate-scope' : 'ng-scope');
+                } : noop;
+
+                return compile;
+
+                function compile($compileNodes, transcludeFn, maxPriority, ignoreDirective, previousCompileContext) {
+                    if (!($compileNodes instanceof jqLite)) {
+                        $compileNodes = jqlite($compileNodes);
+                    }
+
+                    var NOT_EMPTY = /\S+/;
+
+                    var compositeLinkFn = compileNodes($compileNodes, transcludeFn, $compileNodes, maxPriority, ignoreDirective, previousCompileContext);
+                    compile.$$addScopeClass($compileNodes);
+                    return function publicLinkFn() {
+
+                    };
+                }
+
+                function compileNodes(nodeList, transcludeFn, $rootElement, maxPriority, ignoreDirective, previousCompileContext) {
+                    var linksFn = [],
+                        attrs, directives, nodeLinkFn, childNodes, childLinkFn, linkFnFound, nodeLinkFnFound;
+                    for (var i = 0; i < nodeList.length; i++) {
+                        attrs = new Attributes();
+                        directives = collectDirectives();
+                        nodeLinkFn = (directives.length)
+                            ? applyDirectivesToNode()
+                            : null;
+                    }
+                }
+
+                function collectDirectives(node, directives, attrs, maxPriority) {
+                  var nodeType=node.nodeType,
+                      attrsMap=attrs.$attr,
+                      match,
+                      className;
+
+                  switch(nodeType){
+                    case NODE_TYPE_ELEMENT:
+                      addDirective();
+                      //todo
+                  }
+
+                }
+            }];
+    }
     function $AnimateProvider(){
         // todo
     }
-
     function $HttpParamSerializerProvider(){
         //todo
     }
