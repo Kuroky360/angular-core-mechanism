@@ -1047,11 +1047,27 @@
                   switch(nodeType){
                     case NODE_TYPE_ELEMENT:
                       addDirective();
-                      //todo
+                      for(var attr,name,nName,ngAttrName,value,isNgAttr,nAttrs=node.Attributes,
+                          j=0,jj=nAttrs&&nAttrs.length;j<jj;j++){
+                          var attrStartName=false; 
+                          var attrEndName=false;
+                          attr=nAttrs[j];
+                          name=attr.name;
+                          value=trim(attr.value);
+                          //todo
+                      }
                   }
 
                 }
             }];
+    }
+    
+
+    var PREFIX_REGEXP=/^((?:data|x)[\:\-])/i;
+
+    //Converts all accepted directives format into proper directive name.
+    function DirectiveNormalize(name){
+      return camelCase(name.replace());
     }
     function $AnimateProvider(){
         // todo
