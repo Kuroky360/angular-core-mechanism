@@ -1067,8 +1067,18 @@
 
     //Converts all accepted directives format into proper directive name.
     function DirectiveNormalize(name){
-      return camelCase(name.replace());
+      return camelCase(name.replace(PREFIX_REGEXP,''));
     }
+    
+    var SPECIAL_CHARS_REGEXP=/([\:\-\_]+(.))/g;
+    var MOZ_HACK_REGEXP=/^moz([A-Z])/;
+    //Converts snake_case to camelCase.
+    function camelCase(name){
+      return name.replace(SPECIAL_CHARS_REGEXP,function(_,separator,letter,offset){
+        return offset?letter.toUpperCase():letter;
+      }).replace(MOZ_HACK_REGEXP,'Moz$1');
+    }
+
     function $AnimateProvider(){
         // todo
     }
