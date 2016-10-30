@@ -1059,6 +1059,27 @@
                   }
 
                 }
+                
+                function addDirective(tDirectives,name,location,maxPriority,ignoreDirective,startAttrName,endAttrName){
+                  if(name===ignoreDirective) return null;
+                  var match=null;
+                  if(hasDirectives.hasOwnProperty(name)){
+                    for(var directive,directives=$injector.get(name+Suffix),i=0,ii=directives.length;i<ii;i++){
+                      try{
+                        directive=directives[i];
+                        if((isUndefined(maxPriority)||maxPriority>directive.priority)&&directive.restrict.indexOf(location)!=-1){
+                          if(startAttrName){
+                             //todo
+                          }
+                          tDirectives.push(directive);
+                          match=directive;
+                        }
+                      }catch(e){$exceptionHandler(e);}
+                    }
+                  }
+                  return match;
+                }
+
             }];
     }
     
