@@ -30,6 +30,7 @@
     var NODE_TYPE_ELEMENT = 1;
     var NODE_TYPE_ATTRITUBE = 2;
     var NODE_TYPE_TEXT = 3;
+    var NODE_TYPE_COMMENT=8;
     var NODE_TYPE_DOCUMENT = 9;
     var NODE_TYPE_DOCUMENT_FRAGMENT = 11;
 
@@ -1038,7 +1039,7 @@
                     }
                 }
 
-                function collectDirectives(node, directives, attrs, maxPriority) {
+                function collectDirectives(node, directives, attrs, maxPriority,ignoreDirective) {
                   var nodeType=node.nodeType,
                       attrsMap=attrs.$attr,
                       match,
@@ -1046,7 +1047,7 @@
 
                   switch(nodeType){
                     case NODE_TYPE_ELEMENT:
-                      addDirective();
+                      addDirective(directives,DirectiveNormalize(nodeName_(node),'E',maxPriority,ignoreDirective);
                       for(var attr,name,nName,ngAttrName,value,isNgAttr,nAttrs=node.Attributes,
                           j=0,jj=nAttrs&&nAttrs.length;j<jj;j++){
                           var attrStartName=false; 
@@ -1056,8 +1057,24 @@
                           value=trim(attr.value);
                           //todo
                       }
+                      break;
+                    case NODE_TYPE_TEXT:
+                      //todo
+                      break;
+                    case NODE_TYPE_COMMENT:
+                      //todo
+                      break;
                   }
+                  directives.sort(byPriority);
+                  return directives;
+                }
 
+                // sorting function for bound directive 
+                function byPriority(a,b){
+                  var diff=b.priority-a.priority;
+                  if(diff!==0) return diff;
+                  if(a.name!==b.name)return (a.name<b.name)?-1:1;
+                  return a.index-b.index;
                 }
                 
                 function addDirective(tDirectives,name,location,maxPriority,ignoreDirective,startAttrName,endAttrName){
