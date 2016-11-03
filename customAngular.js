@@ -1022,8 +1022,13 @@
 
                     var compositeLinkFn = compileNodes($compileNodes, transcludeFn, $compileNodes, maxPriority, ignoreDirective, previousCompileContext);
                     compile.$$addScopeClass($compileNodes);
-                    return function publicLinkFn() {
-
+                    return function publicLinkFn(scope,cloneConnectFn,options) {
+                      options=options||{};
+                      var $linkNode=$compileNodes;
+                      compile.$$addScopeInfo($linkNode,scope);
+                      if(cloneConnectFn) cloneConnectFn($linkNode,scope);
+                      if(compositeLinkFn) compositeLinkFn(scope,$linkNode,$linkNode,parentBoundTranscludeFn);
+                      return $linkNode;
                     };
                 }
 
