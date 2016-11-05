@@ -1037,7 +1037,7 @@
                         attrs, directives, nodeLinkFn, childNodes, childLinkFn, linkFnFound, nodeLinkFnFound;
                     for (var i = 0; i < nodeList.length; i++) {
                         attrs = new Attributes();
-                        directives = collectDirectives();
+                        directives = collectDirectives(nodeList[i],[],attrs,i===0?maxPriority:undefined,ignoreDirective);
                         nodeLinkFn = (directives.length)
                             ? applyDirectivesToNode()
                             : null;
@@ -1101,6 +1101,24 @@
                   }
                   return match;
                 }
+                
+                function applyDirectivesToNode(directives,compileNode,templateAttrs,transcludeFn,jqCollection,originalReplaceDirective,preLinkFn,postLinkFn
+                    ,previousCompileContext){
+                  previousCompileContext=previousCompileContext||{};
+                  var terminalPriority=-Number.MAX_VALUE,
+                      newScopeDirective=previousCompileContext.newScopeDirective,
+                      controllerDirectives=previousCompileContext.controllerDirectives,
+                      newIsolateScopeDirective=previousCompileContext.newIsolateScopeDirective,
+                      templateDirective=previousCompileContext.templateDirective,
+                      nonTlbTranscludeDirective=previousCompileContext.nonTlbTranscludeDirective,
+                      hasTranscludeDirective=false,
+                      hasTemplate=false,
+                      hasElementTranscludeDirective=previousCompileContext.hasElementTranscludeDirective,
+                      //todo
+                }
+
+
+
 
             }];
     }
