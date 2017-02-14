@@ -899,7 +899,8 @@
             'forEach': forEach,
             'lowercase': lowercase,
             'uppercase': uppercase,
-            'reloadWithDebugInfo': reloadWithDebugInfo
+            'reloadWithDebugInfo': reloadWithDebugInfo,
+            '$$csp':csp
         });
         angularModule = setupModuleLoader(window);
         angularModule('ng', ['ngLocale'], ['$provide', function ($provide) {
@@ -1700,6 +1701,34 @@
         // todo
     }
 
+    var csp=function(){
+      if(!isDefined(csp.rules)){
+          var ngCspElement=document.querySelector('[ng-csp]')||document.querySelector('[data-ng-csp]');
+          if(ngCspElement){
+            var ngCspAttribute=ngCspElement.getAttribute('ng-csp')||ngCspAttribute.getAttribute('data-ng-csp');
+            csp.rules={
+              noUnsafeEval:!ngCspAttribute||(ngCspAttribute.indexOf('no-unsafe-eval')!==-1),
+              noInlineStyle:!ngCspAttribute||(ngCspAttribute.indexOf('no-inline-style')!==-1)
+            };
+          }else{
+            csp.rules={
+              noUnsafeEval:noUnsafeEval(),
+              noInlineStyle:false
+            };  
+          }
+      }
+      return csp.rules;
+      
+      function noUnsafeEval(){
+        try{
+          new Function('');
+          return false;
+        }catch(e){
+          return true;
+        }
+      }
+    }
+    
     function angularInit(element, bootstrap) {
         var appElement,
             config={},
@@ -1742,3 +1771,5 @@
     })
 
 }(window, document);
+
+!window.angular.$$csp().noInlineStyle&&window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
