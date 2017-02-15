@@ -1581,6 +1581,35 @@
                 this.$$isolateBindings=null;
             }
 
+            Scope.prototype={
+              constructor:Scope,
+              $new:function(isolate,parent){
+                var child;
+                parent=parent||this;
+                if(isolate){
+                  child=new Scope();
+                  child.$root=this.$root;
+                }else{
+                  if(!this.$$ChildScope){
+                    this.$$ChildScope=createChildScopeClass(this);
+                  }
+                  child=new this.$$ChildScope();
+                }
+                child.$parent=parent;
+                child.$$prevSibling=parent.$$childTail;
+                if(parent.$$childHead){
+                  parent.$$childTail.$$nextSibling=child;
+                  parent.$$childTail=child;
+                }else{
+                  parent.$$childHead=parent.$$childTail=child;
+                }
+
+                if(isolate||parent!==this) child.$on('$destroy',destroyChildScope);
+
+                return child;
+              }
+            };
+
             var $rootScope=new Scope();
             var asyncQueue=$rootScope.$$asyncQueue=[];
             var postDigestQueue=$rootScope.$$postDigestQueue=[];
