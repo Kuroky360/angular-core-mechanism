@@ -1607,6 +1607,9 @@
                 if(isolate||parent!==this) child.$on('$destroy',destroyChildScope);
 
                 return child;
+              },
+              $eval:function(expression,locals){
+                return $parse(expression)(this,locals);
               }
             };
 
