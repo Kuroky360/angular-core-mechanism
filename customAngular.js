@@ -1695,6 +1695,48 @@
                 }
                 event.currentScope=null;
                 return event;
+              },
+              $emit:function(name,args){
+                var stopPropagation=false,
+                    length,
+                    i,
+                    listeners,
+                    scope=this,
+                    event={
+                      name:name,
+                      targetScope:scope
+                      stopPropagation:function(){stopPropagation=true;},
+                      preventDefault:function(){event.defaultPrevented=true;},
+                      defaultPrevented:false
+                    },
+                    listenerArgs=concat([event],arguments,1);
+                do{
+                  listeners=scope.$$listeners[name]||[];
+                  event.currentScope=scope;
+                  for(i=0,length=listeners.length;i<length;i++){
+                    if(!listeners[i]){
+                      listeners.splice(i,1);
+                      i--;
+                      length--;
+                      continue;
+                    }
+
+                    try{
+                      listeners[name].apply(null,listenerArgs);
+                    }catch(e){
+                      $exceptionHandler(e);
+                    }
+                  }
+                  if(stopPropagation){
+                    event.currentScope=null;
+                    return event;
+                  }
+
+                  current=scope.$parent;
+
+                }while(current);
+                event.currentScope=null;
+                return event;
               }
             };
 
