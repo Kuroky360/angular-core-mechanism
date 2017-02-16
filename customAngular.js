@@ -1629,6 +1629,28 @@
                     throw e;
                   }
                 }
+              },
+              $on:function(name,listener){
+                var namedListeners=this.$$listeners[name];
+                if(!namedListeners){
+                  this.$$listeners[name]=namedListeners=[];
+                }
+                namedListeners.push(listener);
+                var current=this;
+                do{
+                  if(!current.$$listenersCount[name]){
+                    current.$$listenersCount[name]=0;
+                  }
+                  current.$$listenersCount[name]++;
+                }while(current=current.$parent);
+                var self =this;
+                return function(){
+                  var indexOfListener=namedListeners.indexOf(listener);
+                  if(indexOfListener!==-1){
+                    namedListeners[indexOfListener]=null;
+                    decrementListenerCount(self,1,name);
+                  }
+                }
               }
             };
 
