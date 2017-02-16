@@ -1737,6 +1737,29 @@
                 }while(current);
                 event.currentScope=null;
                 return event;
+              },
+              $watch:function(watchExp,listener,objectEquality){
+                var get=$parse(watchExp),
+                    scope=this,
+                    watchers=scope.$$watchers||[],
+                    watcher={
+                      fn:listener,
+                      last:initWatchVal,
+                      get:get,
+                      exp:watchExp,
+                      eq:!!objectEquality
+                    };
+                lastDirtyWatch=null;
+                if(!isFunciton(listener)) watcher.fn=angular.noop;
+                
+                watchers.push(watcher);
+                incrementWatchersCount(scope,1);
+                return function(){
+                  if(arrayRemove(watchers,listener)>=0){
+                    incrementWatchersCount(scope,-1);
+                  }
+                  lastDirtyWatch=null;
+                };
               }
             };
 
