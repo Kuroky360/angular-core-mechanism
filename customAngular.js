@@ -1610,6 +1610,25 @@
               },
               $eval:function(expression,locals){
                 return $parse(expression)(this,locals);
+              },
+              $apply:function(expression){
+                try{
+                  beginPhase('$apply');
+                  try{
+                    return this.$eval(expression);
+                  }finally{
+                    clearPhase();
+                  }
+                }catch(e){
+                  $exceptionHandler(e);
+                }finally{
+                  try{
+                    $rootScope.$digest();
+                  }catch(e){
+                    $exceptionHandler(e);
+                    throw e;
+                  }
+                }
               }
             };
 
