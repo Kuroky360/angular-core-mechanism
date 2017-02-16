@@ -1651,6 +1651,50 @@
                     decrementListenerCount(self,1,name);
                   }
                 }
+              },
+              $broadcast:function(name,args){
+                var target=this,
+                    current=target,
+                    next=target,
+                    event={
+                      name:name,
+                      targetScope:target,
+                      preventDefault:function(){
+                        event.defaultPrevented=true;
+                      },
+                      defaultPrevented:false
+                    };
+                if(!target.$$listenersCount[name]) return event;
+
+                var listenerArgs=concat([event],arguments,1),
+                    listeners,length,i;
+
+                while((current=next)){
+                  event.currentScope=current;
+                  listeners=current.$$listeners[name]||[];
+
+                  for(i=0,length=listeners.length;i<length;i++){
+                    if(!listeners[i]){
+                      listeners.splice(i,1);
+                      i--;
+                      length--;
+                      continue;
+                    }
+                    
+                    try{
+                      listeners[i].apply(null,listenerArgs);
+                    }catch(e){
+                      $exceptionHandler(e);
+                    }
+                  }
+                  if(!(next=((current.$$listenersCount[name]&&current.$$childHead)||(current!==target&&current.$$nextSibling)))){
+                    while(current!==target&&!next=current.$$nextSibling){
+                      current=current.$parent;
+                    }
+                  }
+                }
+                event.currentScope=null;
+                return event;
               }
             };
 
