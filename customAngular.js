@@ -1752,7 +1752,8 @@
                 lastDirtyWatch=null;
                 if(!isFunciton(listener)) watcher.fn=angular.noop;
                 
-                watchers.push(watcher);
+                watchers.unshift(watcher);
+                watchers.$$digestWatchIndex=-1;
                 incrementWatchersCount(scope,1);
                 return function(){
                   if(arrayRemove(watchers,listener)>=0){
