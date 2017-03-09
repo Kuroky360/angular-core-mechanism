@@ -1761,9 +1761,18 @@
                   }
                   lastDirtyWatch=null;
                 };
+              },
+              $evalAsync:funtion(expression,locals){
+                if(!$rootScope.$$phase&&!asyncQueue.length){
+                  $browser.defer(function(){
+                    if(asyncQueue.length){
+                      $rootScope.$digest();
+                    }
+                  })
+                } 
+                asyncQueue.push({scope:this,expression:$parse(expression),locals:locals};
               }
             };
-
             var $rootScope=new Scope();
             var asyncQueue=$rootScope.$$asyncQueue=[];
             var postDigestQueue=$rootScope.$$postDigestQueue=[];
