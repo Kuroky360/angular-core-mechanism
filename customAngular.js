@@ -1771,6 +1771,65 @@
                   })
                 } 
                 asyncQueue.push({scope:this,expression:$parse(expression),locals:locals};
+              },
+              $digest:function(){
+                var watch,fn,last,value,
+                    current,next,target=this,
+                    dirty,lastDirtyWatch,asyncTask,
+                    watchers,get,last,fn,
+                    digestError=minErr('$digest');
+                do{
+
+                  dirty=false;
+                  current=target;
+                  
+                  for(var i=0,ii=asyncQueue.length;i++){
+                    try{
+                      asyncTask=asyncQueue[i];
+                      asyncTask.scope.$eval(asyncTask.expression,asyncTask.locals);
+                    }catch(exception){
+                      $exceptionHandler(exception);
+                    }
+                    lastDirtyWatch=null;
+                  }
+                  
+                  traverseScopeLoop:
+                    do{
+                      watchers=current.$$watchers;
+                      watcherIndex=watchers.$$digestWatchIndex=watchers.length;
+                      while(watcherIndex--){
+                        watcher=watchers[watcherIndex];
+                        if(watcher){
+                          get=watcher.get;
+                          if((value=get(current))!==(last=watcher.last)&&!watcher.eq?value.equals(last):(Number.isNaN(value)&&Number.isNaN(last))){
+                            dirty=true;
+                            lastDirtyWatch=watcher;
+                            watcher.last=watcher.eq?copy(value,null):value;
+                            fn=watcher.fn;
+                            fn(value,last===initWatchVal?value:last,current);
+                            //todo 
+                          }else if(watcher===initWatchVal){
+                            dirty=false;
+                            break traverseScopeLoop; 
+                          }
+                        }
+                      }
+                      //depth-first 
+                      if(!(next=(current.$$watchersCount&&current.$$childHead)||(current!==target&&current.$$nextSibling))){
+                        while((current!==target)&&!(next=current.$$nextSibling)){
+                          current=current.$parent;
+                        }
+                      }
+                    }while(current=next);
+                  
+                  if((dirty||asyncQueue.length)&&!(TTL--)){
+                    clearPhase();
+                    throw digestError();
+                  }
+
+                }while(dirty||asyncQueue.length);
+                clearPhase();   
+                //todo
               }
             };
             var $rootScope=new Scope();
