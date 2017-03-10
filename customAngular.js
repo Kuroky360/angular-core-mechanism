@@ -1451,7 +1451,38 @@
 
     // timeout
     function $TimeoutProvider() {
-        // todo
+      this.$get=['$rootScope','$$q','$q','$exceptionHandler','$browser',funtion($rootScope,$$q,$q,$exceptionHandler,$browser){
+       var deferreds={};
+       function timeout(fn,delay,invokeApply){
+         if(!isFunciton(fn)){
+           delay=fn;
+           invokeApply=delay;
+           fn=noop;
+         }
+         var timeoutID,
+             args=sliceArgs(arguments,3),
+             skipApply=isDefined(invokeApply)&&!invokeApply;
+             deferred=(skipApply?$$q:$q).defer();
+             promise=deferred.promise;
+         timeoutID=$browser.defer(function(){
+            try{
+              deferred.resolve(fn.apply(null,args));
+            }catch(exception){
+              deferred.reject(exception);
+              $exceptionHandler(exception);
+            }finally{
+              delete deferreds[promise.$$timeoutID];
+            } 
+            if(!skipApply) $rootScope.$apply();
+         },delay)
+
+         promise.$$timeoutID=timeoutID;
+         deferreds[timeoutID]=deferred; 
+
+         return promise;
+       }
+       return timeout;
+      }];
     }
 
     // logProvider
