@@ -1839,6 +1839,7 @@
                   applyAsyncQueue.push(evalExpression);
                 }
                 expression=$parse(expression);
+                scheduleApplyAsync();
                 function evalExpression(){
                   scope.$eval(expression);
                 }
