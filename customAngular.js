@@ -1793,6 +1793,8 @@
                     lastDirtyWatch=null;
                   }
                   
+                  asyncQueue.length=0;
+                  
                   traverseScopeLoop:
                     do{
                       watchers=current.$$watchers;
@@ -1830,6 +1832,16 @@
                 }while(dirty||asyncQueue.length);
                 clearPhase();   
                 //todo
+              },
+              $applyAsync:function(expression){
+                var scope=this;
+                if(expression){
+                  applyAsyncQueue.push(evalExpression);
+                }
+                expression=$parse(expression);
+                function evalExpression(){
+                  scope.$eval(expression);
+                }
               }
             };
             var $rootScope=new Scope();
