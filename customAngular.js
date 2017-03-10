@@ -1778,6 +1778,13 @@
                     dirty,lastDirtyWatch,asyncTask,
                     watchers,get,last,fn,
                     digestError=minErr('$digest');
+
+                // execute ApplyAsync
+                if(this===$rootScope&&applyAsyncId!==null){
+                  $browser.defer.cancel(applyAsyncId);
+                  flushApplyAsync();
+                }
+                
                 do{
 
                   dirty=false;
