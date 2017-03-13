@@ -1446,7 +1446,11 @@
     }
 
     function $xhrFactoryProvider() {
-        //todo
+        this.$get=function(){
+          return function createXhr(){
+            return new window.XMLHttpRequest();
+          };
+        }
     }
 
     // timeout
@@ -1480,6 +1484,14 @@
          deferreds[timeoutID]=deferred; 
 
          return promise;
+       }
+       timeout.cancel=function(promise){
+         if(promise&&(promise.$$timeoutID in deferreds)){
+            deferreds[promise.$$timeoutID].promise.catch(noop);
+            deferreds[promise.$$timeoutID].reject('canceled');
+            return $browser.defer.cancel(promise.$$timeoutID);
+         }
+         return false;
        }
        return timeout;
       }];
