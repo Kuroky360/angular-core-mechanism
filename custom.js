@@ -1731,7 +1731,7 @@
                     }
                   }
                   if(!(next=((current.$$listenersCount[name]&&current.$$childHead)||(current!==target&&current.$$nextSibling)))){
-                    while(current!==target&&!next=current.$$nextSibling){
+                    while(current!==target&&!(next=current.$$nextSibling)){
                       current=current.$parent;
                     }
                   }
@@ -2041,7 +2041,7 @@
           return true;
         }
       }
-    }
+    };
     
     function angularInit(element, bootstrap) {
         var appElement,
